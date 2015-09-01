@@ -6,5 +6,7 @@ angular.module('myApp', [
     'myApp.view1'
 ]).
 config(['$routeProvider', function($routeProvider) {
-    $routeProvider.otherwise({redirectTo: '/view1'});
+    $routeProvider
+        .when('/view1', {controller: 'View1Ctrl', templateUrl: 'view1/view1.html'})
+        .otherwise({redirectTo: '/view1'});
 }])
