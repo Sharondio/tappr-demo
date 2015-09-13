@@ -3,7 +3,6 @@ var args = require('yargs').argv;
 var path = require('path');
 var del = require('del');
 var $ = require('gulp-load-plugins')({lazy: true});
-var connect = require('gulp-connect');
 
 var app = './app/';
 var scripts = app;
@@ -65,7 +64,6 @@ gulp.task('clean-styles', function (done) {
     log('Clean style: ' + config.style + 'css/*.css');
     var files = config.style + 'css/*.css';
     clean(files, done);
-
 });
 
 gulp.task('styles', ['clean-styles'], function () {
@@ -74,9 +72,10 @@ gulp.task('styles', ['clean-styles'], function () {
         .src(config.styleLess)
         .pipe($.plumber())
         .pipe($.less())
-        .pipe($.autoprefixer({browsers: ['last 2 version', '> 5%']}))
         .pipe(gulp.dest(config.styleAppCss));
 });
+
+gulp.watch(['./app/styles/less/*.less'], ['styles']);
 
 gulp.task('images', ['clean-images'], function () {
     log('Build: images and compress to  -->' + config.build + 'images');
@@ -93,9 +92,9 @@ gulp.task('wiredep', function () {
 
     return gulp
         .src(config.index)
-        //.pipe(wiredep(options))
-        //.pipe($.inject(gulp.src(config.main)))
-        //.pipe(gulp.dest(config.app));
+        .pipe(wiredep(options))
+        .pipe($.inject(gulp.src(config.main)))
+        .pipe(gulp.dest(config.app));
 });
 
 gulp.task('inject', ['wiredep', 'styles'], function () {
@@ -112,26 +111,6 @@ gulp.task('less-watcher', function () {
     gulp.watch([config.less], ['styles']);
 });
 
-// optimizers
-gulp.task('optimize', ['inject'], function () {
-    log('Optimizing the js, css, and html');
-
-    var assets = $.useref.assets({searchPath: './'});
-    // Filters are named for the gulp-useref path
-    //var cssFilter = $.filter('**/*.css');
-    //var jsAppFilter = $.filter('**/' + config.optimized.app);
-    //var jslibFilter = $.filter('**/' + config.optimized.lib);
-    //
-
-    return gulp
-        .src(config.index)
-        .pipe($.plumber())
-        .pipe(assets) // Gather all assets from the html with useref
-        .pipe(assets.restore())
-        .pipe($.useref())
-        .pipe(gulp.dest(config.build));
-});
-
 gulp.task('test', ['vet'], function (done) {
     startTests(true /* single run */, done);
 });
@@ -142,7 +121,7 @@ gulp.task('autotest', function (done) {
 
 // Server
 gulp.task('connect', function() {
-    connect.server({
+    $.connect.server({
         port: 3000,
         root: 'app',
         livereload: true
@@ -151,7 +130,7 @@ gulp.task('connect', function() {
 
 gulp.task('html', function () {
     gulp.src('./app/*.html')
-        .pipe(connect.reload());
+        .pipe($.connect.reload());
 });
 
 gulp.task('watch', function () {
