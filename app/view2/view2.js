@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.view2', [])
+angular.module('tappr.view2', [])
 
 .controller('View2Ctrl', ['$scope', function($scope) {
     $scope.messages = [];

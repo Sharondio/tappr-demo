@@ -12,8 +12,8 @@ var config = {
     source: '',
     temp: temp,
     scripts: scripts,
-    style: app + 'styles/',
     styleAppCss: app + 'styles/css/',
+    styleBootstrapLess: '/node_modules/bootstrap/less/',
     styleCss: 'styles/css/',
     styleLess: app + 'styles/less/styles.less',
     images: app + 'images/**/*.*',
@@ -61,29 +61,27 @@ gulp.task('vet', function () {
 });
 
 gulp.task('clean-styles', function (done) {
-    log('Clean style: ' + config.style + 'css/*.css');
-    var files = config.style + 'css/*.css';
-    clean(files, done);
+    log('Clean style: ' + config.style + 'css/*.css', done);
+    clean('./app/styles/css/*.css', done);
 });
 
-gulp.task('styles', ['clean-styles'], function () {
+gulp.task('bootstrap-styles', function () {
+    log('Compile Bootstrap styles --> ' + config.styleAppCss);
+    gulp
+        .src(config.styleBootstrapLess)
+        .pipe($.less())
+        .pipe(gulp.dest(config.styleAppCss));
+});
+
+gulp.task('styles', ['clean-styles', 'bootstrap-styles'], function () {
     log('Compile Less --> files to and place in: ' + config.styleAppCss);
     return gulp
         .src(config.styleLess)
-        .pipe($.plumber())
         .pipe($.less())
         .pipe(gulp.dest(config.styleAppCss));
 });
 
 gulp.watch(['./app/styles/less/*.less'], ['styles']);
-
-gulp.task('images', ['clean-images'], function () {
-    log('Build: images and compress to  -->' + config.build + 'images');
-
-    return gulp.src(config.images)
-        .pipe($.imagemin({optimizationLevel: 4}))
-        .pipe(gulp.dest(config.build + 'images'));
-});
 
 gulp.task('wiredep', function () {
     log('Wire dependencies: bower css, our app into index.html');
@@ -108,33 +106,25 @@ gulp.task('inject', ['wiredep', 'styles'], function () {
 
 // Watchers
 gulp.task('less-watcher', function () {
-    gulp.watch([config.less], ['styles']);
+    gulp.watch(['./app/styles/less/*.less'], ['styles']);
 });
 
-gulp.task('test', ['vet'], function (done) {
-    startTests(true /* single run */, done);
-});
-
-gulp.task('autotest', function (done) {
-    startTests(false /*singleRun*/, done);
+gulp.task('watch', function () {
+    gulp.watch(['./app/*.html', './app/**/*.html', './app/**/*.js', './app/styles/css/*.css'], ['reload']);
 });
 
 // Server
 gulp.task('connect', function() {
     $.connect.server({
-        port: 3000,
+        port: 8000,
         root: 'app',
         livereload: true
     });
 });
 
-gulp.task('html', function () {
+gulp.task('reload', function () {
     gulp.src('./app/*.html')
         .pipe($.connect.reload());
-});
-
-gulp.task('watch', function () {
-    gulp.watch(['./app/*.html','./app/views/**/*.js','./app/styles/css/styles.css', './app/views/**/*.html'], ['html']);
 });
 
 gulp.task('serve', ['connect', 'watch']);
@@ -142,7 +132,6 @@ gulp.task('serve', ['connect', 'watch']);
 function clean(path, done) {
     log('Cleaning ' + path);
     del(path, done);
-
 }
 
 function log(msg) {
