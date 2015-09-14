@@ -1,7 +1,9 @@
+// TODO: figure out the order of the CSS concat/compile/minify process with vendor libs.
 var gulp = require('gulp');
 var args = require('yargs').argv;
 var path = require('path');
 var del = require('del');
+var bowerFiles = require('bower-files')();
 var $ = require('gulp-load-plugins')({lazy: true});
 
 var app = './app/';
@@ -21,8 +23,17 @@ var config = {
         app + '**/*.js',
     ],
     alljs: [
-        scripts + '**/*.js',
+        app + 'scripts/**/*.js',
         app + 'app.js'
+    ],
+    vendorjs: [
+        './node_modules/bootstrap/dist/js/bootstrap.js',
+        './app/bower_components/'
+    ],
+    allcss: [
+        './app/bower_components/bootstrap/dist/css/bootstrap.min.css',
+        './app/bower_components/bootstrap/dist/css/bootstrap-theme.min.css',
+        './app/styles/css/*.css'
     ],
     bower: {
         json: require('./bower.json'),
@@ -44,24 +55,82 @@ gulp.task('vet', function () {
         .pipe($.jshint.reporter('jshint-stylish'), {verbose: true});
 });
 
-gulp.task('clean-styles', function (done) {
-    log('Clean style: ' + config.style + 'css/*.css', done);
-    clean('./app/styles/css/*.css', done);
+
+gulp.task('clean-styles', function () {
+    log('Clean styles: ./app/styles/css/*.css');
+    return del(['./app/styles/bundle.css']);
 });
 
-gulp.task('bootstrap-styles', function () {
-    log('Compile Bootstrap styles --> ' + './app/styles/css/');
+gulp.task('concat-css', function () {
+    log('Concat CSS');
     return gulp
-        .src('./node_modules/bootstrap/dist/css/*.min.css')
-        .pipe(gulp.dest('./app/styles/css'));
+        .src(config.allcss)
+        .pipe($.concatCss('bundle.css'))
+        .pipe(gulp.dest('./app/styles'));
 });
 
-gulp.task('styles', ['clean-styles', 'bootstrap-styles'], function () {
-    log('Compile Less --> files to and place in: ./app/styles/css');
-    var stream = gulp.src('./app/styles/less/*.less')
+gulp.task('less-css', function () {
+    log('Less CSS');
+    return gulp
+        .src( )
+})
+
+gulp.task('minify-css', function () {
+    "use strict";
+    log('Minify CSS');
+    return gulp
+        .src('./app/styles/bundle.css')
+        .pipe($.sourcemaps.init())
+        .pipe($.minifyCss())
+        .pipe($.sourcemaps.write())
+        .pipe(gulp.dest('./app/styles/'));
+});
+
+gulp.task('styles', ['clean-styles', 'concat-css'], function () {
+    log('Compile Less --> ./app/styles/css');
+    return gulp.src('./app/styles/less/*.less')
         .pipe($.less())
         .pipe(gulp.dest('./app/styles/css'))
-    return stream;
+});
+
+gulp.task('concat-js', function () {
+    log('Concat JS --> ./app/all.js');
+    return gulp
+        .src(config.alljs)
+        .pipe($.concat('all.js'))
+        .pipe(gulp.dest('./app'));
+});
+
+gulp.task('concat-bower', function() {
+    log('Concat Bower --> ./app/bower.js');
+    gulp
+        .src(bowerFiles.ext('js').files)
+        .pipe($.concat('bower.js'))
+        .pipe(gulp.dest('./app'));
+});
+
+gulp.task('uglify-bower', function () {
+    log('Uglify bower.js');
+    gulp
+        .src('./app/bower.js')
+        .pipe($.uglify())
+        .pipe(gulp.dest('./app'));
+});
+
+gulp.task('uglify-js', function () {
+    log('Uglify all.js');
+    gulp
+        .src('./app/all.js')
+        .pipe($.uglify())
+        .pipe(gulp.dest('./app'));
+});
+
+gulp.task('build', ['styles', 'concat-js', 'concat-bower'], function () {
+    log('Build');
+});
+
+gulp.task('build:prod', ['build', 'uglify-bower', 'uglify-js'], function () {
+    log('Build --> production');
 });
 
 // Watchers
@@ -78,7 +147,8 @@ gulp.task('connect', function() {
     $.connect.server({
         port: 8000,
         root: 'app',
-        livereload: true
+        livereload: true,
+        open: true
     });
 });
 
@@ -88,11 +158,6 @@ gulp.task('reload', function () {
 });
 
 gulp.task('serve', ['connect', 'watch']);
-
-function clean(path, done) {
-    log('Cleaning ' + path);
-    del(path, done);
-}
 
 function log(msg) {
     if (typeof(msg) === 'object') {
