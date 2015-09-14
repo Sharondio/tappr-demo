@@ -1,5 +1,5 @@
 {
-    "excludeFiles": ["node_modules/**", "bower_components/**", "app/js/libs/**/**", "app/js/common/directives/utility/ereader.js"],
+    "excludeFiles": ["node_modules/**", "app/bower_components/**"],
 
     "requireCurlyBraces": [
         "if",
@@ -51,11 +51,6 @@
     "disallowSpacesInsideObjectBrackets": "all",
     "disallowSpacesInsideArrayBrackets": "all",
     "disallowSpacesInsideParentheses": true,
-
-    "validateJSDoc": {
-        "checkParamNames": true,
-        "requireParamTypes": true
-    },
 
     "disallowMultipleLineBreaks": true,
 

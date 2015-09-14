@@ -12,17 +12,11 @@ var config = {
     source: '',
     temp: temp,
     scripts: scripts,
-    styleAppCss: app + 'styles/css/',
-    styleBootstrapLess: '/node_modules/bootstrap/less/',
-    styleCss: 'styles/css/',
-    styleLess: app + 'styles/less/styles.less',
     images: app + 'images/**/*.*',
-    getWiredepDefaultOptions: '',
     index: app + 'index.html',
     main: [
         'app.js'
     ],
-    app: app,
     js: [
         app + '**/*.js',
     ],
@@ -35,17 +29,7 @@ var config = {
         directory: app +'bower_components/',
         ignorePath: '../..'
     },
-
     defaultPort: 8000,
-    server: ''
-};
-
-config.getWiredepDefaultOptions = function () {
-    return {
-        bowerJson: config.bower.json,
-        directory: config.bower.directory,
-        ignorePath: config.bower.ignorePath
-    };
 };
 
 gulp.task('default', ['help']);
@@ -66,42 +50,18 @@ gulp.task('clean-styles', function (done) {
 });
 
 gulp.task('bootstrap-styles', function () {
-    log('Compile Bootstrap styles --> ' + config.styleAppCss);
-    gulp
-        .src(config.styleBootstrapLess)
-        .pipe($.less())
-        .pipe(gulp.dest(config.styleAppCss));
+    log('Compile Bootstrap styles --> ' + './app/styles/css/');
+    return gulp
+        .src('./node_modules/bootstrap/dist/css/*.min.css')
+        .pipe(gulp.dest('./app/styles/css'));
 });
 
 gulp.task('styles', ['clean-styles', 'bootstrap-styles'], function () {
-    log('Compile Less --> files to and place in: ' + config.styleAppCss);
-    return gulp
-        .src(config.styleLess)
+    log('Compile Less --> files to and place in: ./app/styles/css');
+    var stream = gulp.src('./app/styles/less/*.less')
         .pipe($.less())
-        .pipe(gulp.dest(config.styleAppCss));
-});
-
-gulp.watch(['./app/styles/less/*.less'], ['styles']);
-
-gulp.task('wiredep', function () {
-    log('Wire dependencies: bower css, our app into index.html');
-    var options = config.getWiredepDefaultOptions();
-    var wiredep = require('wiredep').stream;
-
-    return gulp
-        .src(config.index)
-        .pipe(wiredep(options))
-        .pipe($.inject(gulp.src(config.main)))
-        .pipe(gulp.dest(config.app));
-});
-
-gulp.task('inject', ['wiredep', 'styles'], function () {
-    log('Wire up the app css into the html and call wiredep');
-
-    return gulp
-        .src(config.index)
-        .pipe($.inject(gulp.src(config.styleCss + '*.css')))
-        .pipe(gulp.dest(config.app));
+        .pipe(gulp.dest('./app/styles/css'))
+    return stream;
 });
 
 // Watchers
