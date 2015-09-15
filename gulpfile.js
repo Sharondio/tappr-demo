@@ -30,11 +30,6 @@ var config = {
         './node_modules/bootstrap/dist/js/bootstrap.js',
         './app/bower_components/'
     ],
-    allcss: [
-        './app/bower_components/bootstrap/dist/css/bootstrap.min.css',
-        './app/bower_components/bootstrap/dist/css/bootstrap-theme.min.css',
-        './app/styles/css/*.css'
-    ],
     bower: {
         json: require('./bower.json'),
         directory: app +'bower_components/',
@@ -64,16 +59,18 @@ gulp.task('clean-styles', function () {
 gulp.task('concat-css', function () {
     log('Concat CSS');
     return gulp
-        .src(config.allcss)
+        .src('./app/styles/css/*.css')
         .pipe($.concatCss('bundle.css'))
         .pipe(gulp.dest('./app/styles'));
 });
 
-gulp.task('less-css', function () {
+gulp.task('less-css', ['move-bootstrap-less'], function () {
     log('Less CSS');
     return gulp
-        .src( )
-})
+        .src('./app/styles/less/styles.less')
+        .pipe($.less())
+        .pipe(gulp.dest('./app/styles/css'));
+});
 
 gulp.task('minify-css', function () {
     "use strict";
