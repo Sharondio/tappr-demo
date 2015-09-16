@@ -144,12 +144,11 @@ gulp.task('connect', function() {
     $.connect.server({
         port: 8000,
         root: 'app',
-        livereload: true,
-        open: true
+        livereload: true
     });
 });
 
-gulp.task('reload', function () {
+gulp.task('reload', ['build'], function () {
     gulp.src('./app/*.html')
         .pipe($.connect.reload());
 });

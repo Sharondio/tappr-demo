@@ -2,13 +2,17 @@
 
 var app = angular.module('tappr', [
     'ngRoute',
-    'tappr.view1',
-    'tappr.view2'
+    'tappr.home',
+    'tappr.profile',
+    'tappr.beersearch',
+    'tappr.beerdetail'
 ]);
 
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
-        .when('/view1', {controller: 'View1Ctrl', templateUrl: 'scripts/view1/view1.html'})
-        .when('/view2', {controller: 'View2Ctrl', templateUrl: 'scripts/view2/view2.html'})
-        .otherwise({redirectTo: '/view1'});
+        .when('/', {controller: 'HomeCtrl', templateUrl: 'scripts/home/home.html'})
+        .when('/profile', {controller: 'ProfileCtrl', templateUrl: 'scripts/profile/profile.html'})
+        .when('/beers', {controller: 'BeerSearchCtrl', templateUrl: 'scripts/beers/search.html'})
+        .when('/beers/:id', {controller: 'BeerDetailCtrl', templateUrl: 'scripts/beers/detail.html'})
+        .otherwise({redirectTo: '/'});
 }]);
