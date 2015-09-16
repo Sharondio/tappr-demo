@@ -6764,6 +6764,16 @@ button.close {
     display: none !important;
   }
 }
+.login {
+  position: absolute;
+  left: 20px;
+  top: 100px;
+  float: left;
+  z-index: 1;
+  background-color: white;
+  border: #752C01 solid thin;
+  padding: 20px;
+}
 /* app css stylesheet */
 .menu {
   list-style: none;

@@ -64,7 +64,7 @@ gulp.task('concat-css', function () {
         .pipe(gulp.dest('./app/styles'));
 });
 
-gulp.task('less-css', ['move-bootstrap-less'], function () {
+gulp.task('less-css', function () {
     log('Less CSS');
     return gulp
         .src('./app/styles/less/styles.less')
@@ -83,7 +83,7 @@ gulp.task('minify-css', function () {
         .pipe(gulp.dest('./app/styles/'));
 });
 
-gulp.task('styles', ['clean-styles', 'concat-css'], function () {
+gulp.task('styles', ['clean-styles', 'less-css', 'concat-css'], function () {
     log('Compile Less --> ./app/styles/css');
     return gulp.src('./app/styles/less/*.less')
         .pipe($.less())
@@ -153,7 +153,7 @@ gulp.task('reload', ['build'], function () {
         .pipe($.connect.reload());
 });
 
-gulp.task('serve', ['connect', 'watch']);
+gulp.task('serve', ['build', 'connect', 'watch']);
 
 function log(msg) {
     if (typeof(msg) === 'object') {
