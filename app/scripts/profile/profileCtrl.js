@@ -10,18 +10,16 @@ angular.module('tappr.profile', [])
     }
 
     $http({
-					method: 'GET',
-					url: '//localhost:8001/user/SharonDio',
-					params: params,
-					cache: useCached
-				})
-					.success(function (data) {
-						$scope.user = data;
-						console.log( data );
-					})
-					.error(function (data, status) {
-						console.log('OOPS!');
-					});
+            method: 'GET',
+            url: '//localhost:8001/user/SharonDio'
+        })
+        .success(function (data) {
+            $scope.user = data;
+            console.log( data );
+        })
+        .error(function (error) {
+            console.log('OOPS!', error);
+        });
 
     init();
 }]);

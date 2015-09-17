@@ -20,7 +20,7 @@ var config = {
         'app.js'
     ],
     js: [
-        app + '**/*.js',
+        app + '**/*.js'
     ],
     alljs: [
         app + 'scripts/**/*.js',
@@ -35,7 +35,7 @@ var config = {
         directory: app +'bower_components/',
         ignorePath: '../..'
     },
-    defaultPort: 8000,
+    defaultPort: 8000
 };
 
 gulp.task('default', ['help']);
@@ -64,7 +64,7 @@ gulp.task('concat-css', function () {
         .pipe(gulp.dest('./app/styles'));
 });
 
-gulp.task('less-css', ['move-bootstrap-less'], function () {
+gulp.task('less-css', function () {
     log('Less CSS');
     return gulp
         .src('./app/styles/less/styles.less')
@@ -141,19 +141,28 @@ gulp.task('watch', function () {
 
 // Server
 gulp.task('connect', function() {
-    $.connect.server({
+    return $.connect.server({
         port: 8000,
         root: 'app',
         livereload: true
     });
 });
 
+gulp.task('open', function () {
+    var options = {
+        uri: 'http://localhost:8000/'
+    };
+
+    gulp.src('./app/index.html') //this must be a valid and existing path.
+        .pipe($.open(options));
+});
+
 gulp.task('reload', ['build'], function () {
-    gulp.src('./app/*.html')
+    return gulp.src('./app/*.html')
         .pipe($.connect.reload());
 });
 
-gulp.task('serve', ['connect', 'watch']);
+gulp.task('serve', ['connect', 'open', 'watch']);
 
 function log(msg) {
     if (typeof(msg) === 'object') {
