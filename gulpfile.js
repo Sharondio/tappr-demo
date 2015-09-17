@@ -26,15 +26,6 @@ var config = {
         app + 'scripts/**/*.js',
         app + 'app.js'
     ],
-    vendorjs: [
-        './node_modules/bootstrap/dist/js/bootstrap.js',
-        './app/bower_components/'
-    ],
-    bower: {
-        json: require('./bower.json'),
-        directory: app +'bower_components/',
-        ignorePath: '../..'
-    },
     defaultPort: 8000
 };
 
@@ -83,7 +74,7 @@ gulp.task('minify-css', function () {
         .pipe(gulp.dest('./app/styles/'));
 });
 
-gulp.task('styles', ['clean-styles', 'concat-css'], function () {
+gulp.task('styles', ['clean-styles', 'less-css', 'concat-css'], function () {
     log('Compile Less --> ./app/styles/css');
     return gulp.src('./app/styles/less/*.less')
         .pipe($.less())
@@ -162,7 +153,7 @@ gulp.task('reload', ['build'], function () {
         .pipe($.connect.reload());
 });
 
-gulp.task('serve', ['connect', 'open', 'watch']);
+gulp.task('serve', ['build', 'connect', 'open', 'watch']);
 
 function log(msg) {
     if (typeof(msg) === 'object') {
