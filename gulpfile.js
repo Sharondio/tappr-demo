@@ -20,22 +20,13 @@ var config = {
         'app.js'
     ],
     js: [
-        app + '**/*.js',
+        app + '**/*.js'
     ],
     alljs: [
         app + 'scripts/**/*.js',
         app + 'app.js'
     ],
-    vendorjs: [
-        './node_modules/bootstrap/dist/js/bootstrap.js',
-        './app/bower_components/'
-    ],
-    bower: {
-        json: require('./bower.json'),
-        directory: app +'bower_components/',
-        ignorePath: '../..'
-    },
-    defaultPort: 8000,
+    defaultPort: 8000
 };
 
 gulp.task('default', ['help']);
