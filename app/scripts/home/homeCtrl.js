@@ -1,24 +1,47 @@
 angular.module('tappr.home', [])
 
 .controller('HomeCtrl', ['$scope', '$http', function($scope, $http) {
-    $scope.messages = [];
 
-    function init () {
-        console.log('INIT');
-        $scope.messages.push('HomeCtrl is initted');
-    }
-    init();
-
+        function init () {
+            console.log('INIT');
+            $scope.messages = [];
+            $scope.user = {};
+            $scope.messages.push('HomeCtrl is initted');
+        }
+        init();
 
         $scope.login = function() {
-            $http.get('http://localhost:8001/').
-                then(function(response) {
-                    // this callback will be called asynchronously
-                    // when the response is available
-                }, function(response) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
+            var baseUrl = '//localhost:8001/user/' ;
+            var queryUrl = baseUrl + $scope.username;
+            $http({
+                method: 'GET',
+                url: queryUrl
+            })
+                .success(function (data) {
+                    $scope.user = data;
+                    console.log( 'homeCtrl: login: ', data );
+                })
+                .error(function (error, code) {
+                    console.log('OOPS!', code);
+                    if (code == '404') {
+                        var newUser = {
+                            username: $scope.username,
+                            favorites: [],
+                            ratings: []
+                        };
+                        $http({
+                            method: 'POST',
+                            url: baseUrl,
+                            data: newUser
+                        })
+                            .success(function (data) {
+                                $scope.user = data;
+                                console.log('User added: ', data);
+                            })
+                            .error(function (error, code) {
+                                console.log('OOPS! ', error, code);
+                            });
+                    }
                 });
-
-        }
+        };
 }]);

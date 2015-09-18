@@ -13,6 +13,16 @@
   border: #752C01 solid thin;
   padding: 20px;
 }
+.home .welcome {
+  position: absolute;
+  left: 40px;
+  top: 20px;
+  float: left;
+  z-index: 1;
+  background-color: white;
+  border: #752C01 solid thin;
+  padding: 20px;
+}
 .home .blurb {
   border: #752C01 solid thin;
   position: absolute;

@@ -3,7 +3,6 @@ var gulp = require('gulp');
 var args = require('yargs').argv;
 var path = require('path');
 var del = require('del');
-var bowerFiles = require('bower-files')();
 var $ = require('gulp-load-plugins')({lazy: true});
 
 var app = './app/';
@@ -69,8 +68,10 @@ gulp.task('concat-js', function () {
 
 gulp.task('concat-bower', function() {
     log('TASK: Concat Bower --> ./app/bower.js');
+    var lib = require('bower-files')();
+
     gulp
-        .src(bowerFiles.ext('js').files)
+        .src(lib.ext('js').files)
         .pipe($.concat('bower.js'))
         .pipe(gulp.dest('./app'));
 });
@@ -107,7 +108,7 @@ gulp.task('less-watcher', function () {
 
 gulp.task('watch', function () {
     console.log('WATCH: app files --> running reload');
-    gulp.watch(['./app/*.html', './app/**/*.html', './app/**/*.js', './app/styles/css/*.css'], ['reload']);
+    gulp.watch(['./app/*.html', './app/**/*.html', './app/**/*.js', './gulpfile.js'], ['reload']);
 });
 
 // Server
