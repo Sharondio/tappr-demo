@@ -2,6 +2,7 @@
 
 var app = angular.module('tappr', [
     'ngRoute',
+    'ngCookies',
     'tappr.home',
     'tappr.profile',
     'tappr.beersearch',
