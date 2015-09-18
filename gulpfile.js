@@ -106,7 +106,7 @@ gulp.task('less-watcher', function () {
 });
 
 gulp.task('watch', function () {
-    console.log('WATCH: js files --> running reload');
+    console.log('WATCH: app files --> running reload');
     gulp.watch(['./app/*.html', './app/**/*.html', './app/**/*.js', './app/styles/css/*.css'], ['reload']);
 });
 
@@ -124,7 +124,7 @@ gulp.task('open', function () {
         uri: 'http://localhost:8000/'
     };
 
-    gulp.src('./app/index.html') //this must be a valid and existing path.
+    gulp.src('./app/index.html')
         .pipe($.open(options));
 });
 
