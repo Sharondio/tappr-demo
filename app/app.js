@@ -17,3 +17,16 @@ app.config(['$routeProvider', function($routeProvider) {
         .when('/beers/:id', {controller: 'BeerDetailCtrl', templateUrl: 'scripts/beers/detail.html'})
         .otherwise({redirectTo: '/'});
 }]);
+
+app.controller('HeaderCtrl', function ($scope, $location) {
+    $scope.isActive = function (view) {
+        console.log('checking view: ', view);
+        return (view === $location.path());
+    };
+
+    $scope.search = function () {
+        console.log('HeaderCtrl: search: ', $scope.query);
+        alert('true');
+
+    }
+});

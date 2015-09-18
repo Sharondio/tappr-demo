@@ -32,6 +32,11 @@
   background-color: white;
   width: 200px;
 }
+.profile {
+  position: absolute;
+  top: 40px;
+  width: 100% !important;
+}
 /* app css stylesheet */
 .menu {
   list-style: none;
@@ -56,6 +61,9 @@
   content: "";
   padding: 0;
 }
-.sharon {
-  background-color: pink;
+.search {
+  margin: 12px;
+}
+.search input {
+  width: 200px;
 }
