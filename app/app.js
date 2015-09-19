@@ -18,15 +18,18 @@ app.config(['$routeProvider', function($routeProvider) {
         .otherwise({redirectTo: '/'});
 }]);
 
-app.controller('HeaderCtrl', function ($scope, $location) {
+app.controller('HeaderCtrl', function ($scope, $location, $rootScope, $location) {
+    console.log('initing HeaderCtrl');
+
     $scope.isActive = function (view) {
-        console.log('checking view: ', view);
         return (view === $location.path());
     };
 
     $scope.search = function () {
         console.log('HeaderCtrl: search: ', $scope.query);
-        alert('true');
 
+        // Getting the search query data to the search controller
+        $location.url('/beers');
+        $rootScope.$broadcast('search', $scope.query);
     }
 });
