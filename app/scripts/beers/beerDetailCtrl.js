@@ -1,11 +1,26 @@
 angular.module('tappr.beerdetail', [])
 
-.controller('BeerDetailCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+.controller('BeerDetailCtrl', ['$scope', '$rootScope', '$routeParams', '$location', '$http',
+        function($scope, $rootScope, $routeParams, $location, $http) {
     $scope.messages = [];
 
     function init () {
-        console.log('INIT');
-        $scope.messages.push('BeerDetailCtrl is initted');
+        console.log('INIT', $routeParams);
+        if ($routeParams.id) {
+            $http({
+                method: 'GET',
+                url: '//localhost:8001/beer/' + $routeParams.id
+            })
+                .success(function (data) {
+                    $scope.beer = data[0];
+                    console.log('beer found: ', data[0]);
+                })
+                .error(function (error) {
+                    console.log('OOPS!', error);
+                });
+        } else {
+            $location.url('/');
+        }
     }
 
     init();
