@@ -7,11 +7,10 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="filters">
-                    Filters:
-                    <div class="subfilter">
-                        Categories:
-                        <div  ng-repeat="cat in categories">
+                <div class="filterBox">
+                    <label>Categories:</label>
+                    <div class="filters">
+                        <div class="filter_checkboxes" ng-repeat="cat in categories">
                             <input type="checkbox" ng-model="filterItems[cat]"> {{cat}}
                         </div>
                     </div>
