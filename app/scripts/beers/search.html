@@ -19,13 +19,29 @@
                 <table class="table table-bordered table-striped table-hover">
                     <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Style</th>
-                        <th>Category</th>
-                        <th>ABV</th>
+                        <th>
+                            Name
+                            <a ng-click="sortValue='name'" class="glyphicon glyphicon-menu-down">
+                            <a ng-click="sortValue='-name'" class="glyphicon glyphicon-menu-up">
+                        </th>
+                        <th>
+                            Style
+                            <a ng-click="sortValue='style.name'" class="glyphicon glyphicon-menu-down">
+                            <a ng-click="sortValue='-style.name'" class="glyphicon glyphicon-menu-up">
+                        </th>
+                        <th>
+                            Category
+                            <a ng-click="sortValue='category.name'" class="glyphicon glyphicon-menu-down">
+                            <a ng-click="sortValue='-category.name'" class="glyphicon glyphicon-menu-up">
+                        </th>
+                        <th>
+                            ABV
+                            <a ng-click="sortValue='abv'" class="glyphicon glyphicon-menu-down">
+                            <a ng-click="sortValue='-abv'" class="glyphicon glyphicon-menu-up">
+                        </th>
                     </tr>
                     </thead>
-                    <tbody ng-repeat="beer in beers">
+                    <tbody ng-repeat="beer in beers | orderBy: sortValue | limitTo: 20 | filter: catFilter">
                     <tr ng-click="load(beer)">
                         <td>{{beer.name}}</td>
                         <td>{{beer.style.name}}</td>

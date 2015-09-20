@@ -16,7 +16,20 @@ angular.module('tappr.beersearch', [])
             })
             .error(function (error) {
                 console.log('OOPS!', error);
+            });
+
+        // initial search
+        $http({
+            method: 'GET',
+            url: '//localhost:8001/beer'
+        })
+            .success(function (data) {
+                $scope.beers = data;
+                console.log('beers found: ', data);
             })
+            .error(function (error) {
+                console.log('OOPS!', error);
+            });
     }
 
     init();
@@ -37,4 +50,8 @@ angular.module('tappr.beersearch', [])
                 console.log('OOPS!', error);
             });
     });
+
+    //$scope.catFilter = function(beer) {
+    //    return $scope.filterItems[beer.category.name];
+    //};
 }]);
