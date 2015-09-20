@@ -5,7 +5,7 @@ angular.module('tappr.beersearch', [])
 
     function init () {
         console.log('INIT');
-        $scope.messages.push('BeerSearchCtrl is initted');
+        $scope.sortValue = 'name';
 
         $http({
             method: 'GET',
@@ -13,6 +13,10 @@ angular.module('tappr.beersearch', [])
         })
             .success(function (data) {
                 $scope.categories = data;
+                $scope.filterItems = {};
+                for(var cat in $scope.categories) {
+                    $scope.filterItems[$scope.categories[cat]] = true;
+                }
             })
             .error(function (error) {
                 console.log('OOPS!', error);
@@ -39,8 +43,7 @@ angular.module('tappr.beersearch', [])
         console.log('SEARCHING from beerSearchCtrl: ', event, data);
         $http({
             method: 'GET',
-            url: '//localhost:8001/beer',
-            data: {query: data}
+            url: '//localhost:8001/beer/q=' + data
         })
             .success(function (data) {
                 $scope.beers = data;
@@ -51,7 +54,7 @@ angular.module('tappr.beersearch', [])
             });
     });
 
-    //$scope.catFilter = function(beer) {
-    //    return $scope.filterItems[beer.category.name];
-    //};
+    $scope.catFilter = function(beer) {
+        return $scope.filterItems[beer.category];
+    };
 }]);
