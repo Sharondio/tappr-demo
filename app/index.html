@@ -7,12 +7,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="styles/bundle.css" rel="stylesheet">
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- inject:css -->
+    <link rel="stylesheet" href="styles/css/detail.css">
+    <link rel="stylesheet" href="styles/css/home.css">
+    <link rel="stylesheet" href="styles/css/profile.css">
+    <link rel="stylesheet" href="styles/css/search.css">
+    <link rel="stylesheet" href="styles/css/styles.css">
+    <!-- endinject -->
 </head>
 
 <body>
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="HeaderCtrl">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -25,10 +34,14 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="/#/profile">Profile</a></li>
-                <li><a href="/#/beers">Beer Search</a></li>
+                <li ng-class="{active: isActive('/')}"><a href="/#/">Home</a></li>
+                <li ng-class="{active: isActive('/profile')}"><a href="/#/profile">Profile</a></li>
+                <li ng-class="{active: isActive('/beers')}"><a href="/#/beers">Beer Search</a></li>
             </ul>
+            <div class="searchinput pull-right">
+                <input type="text" ng-model="query">
+                <button type="button" ng-click="search()">Search</button>
+            </div>
         </div><!--/.nav-collapse -->
     </div>
 </nav>
@@ -37,10 +50,11 @@
   <div ng-view></div>
 </div>
 
-<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
-<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="all.js"></script>
 
 </body>

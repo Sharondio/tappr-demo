@@ -1,6 +1,6 @@
 angular.module('tappr.beerdetail', [])
 
-.controller('BeerDetailCtrl', ['$scope', function($scope) {
+.controller('BeerDetailCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
     $scope.messages = [];
 
     function init () {
@@ -9,4 +9,10 @@ angular.module('tappr.beerdetail', [])
     }
 
     init();
+
+    $rootScope.$on('search', function (event, data) {
+        "use strict";
+        console.log('SEARCHING: ', event, data);
+    });
+
 }]);

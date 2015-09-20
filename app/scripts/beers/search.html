@@ -1,2 +1,55 @@
-<h2>View 2</h2>
-<p>MSG: {{messages | json}}</p>
+<div class="search">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Search Results</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="filterBox">
+                    <label>Categories:</label>
+                    <div class="filters">
+                        <div class="filter_checkboxes" ng-repeat="cat in categories">
+                            <input type="checkbox" ng-model="filterItems[cat]"> {{cat}}
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>
+                            Name
+                            <a ng-click="sortValue='name'" class="glyphicon glyphicon-menu-down">
+                            <a ng-click="sortValue='-name'" class="glyphicon glyphicon-menu-up">
+                        </th>
+                        <th>
+                            Style
+                            <a ng-click="sortValue='style'" class="glyphicon glyphicon-menu-down">
+                            <a ng-click="sortValue='-style'" class="glyphicon glyphicon-menu-up">
+                        </th>
+                        <th>
+                            Category
+                            <a ng-click="sortValue='category'" class="glyphicon glyphicon-menu-down">
+                            <a ng-click="sortValue='-category'" class="glyphicon glyphicon-menu-up">
+                        </th>
+                        <th>
+                            ABV
+                            <a ng-click="sortValue='abv'" class="glyphicon glyphicon-menu-down">
+                            <a ng-click="sortValue='-abv'" class="glyphicon glyphicon-menu-up">
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody ng-repeat="beer in beers | filter: catFilter | orderBy: sortValue | limitTo: 20">
+                    <tr ng-click="load(beer)">
+                        <td>{{beer.name}}</td>
+                        <td>{{beer.style}}</td>
+                        <td>{{beer.category}}</td>
+                        <td>{{beer.abv}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

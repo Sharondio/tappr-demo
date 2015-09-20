@@ -1,2 +1,29 @@
-<h2>Home</h2>
-<p class="sharon">MSG: {{messages | json}}</p>
+<div class="home">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Home</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="login" ng-hide="user.username">
+                    <label>
+                        UserName:
+                        <input type="text" ng-model="username">
+                    </label>
+                    <button type="button" ng-click="login()">Login</button>
+                </div>
+                <div class="welcome" ng-show="user.username">
+                    Welcome {{user.username}}!
+                </div>
+                <div class="main-image">
+                    <img class="img-responsive" src="images/pretty-beers.jpg">
+                </div>
+                <div class="blurb">
+                    Welcome to Tappr, your best drinking friend!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

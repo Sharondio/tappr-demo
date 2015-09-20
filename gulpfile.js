@@ -3,7 +3,6 @@ var gulp = require('gulp');
 var args = require('yargs').argv;
 var path = require('path');
 var del = require('del');
-var bowerFiles = require('bower-files')();
 var $ = require('gulp-load-plugins')({lazy: true});
 
 var app = './app/';
@@ -20,28 +19,19 @@ var config = {
         'app.js'
     ],
     js: [
-        app + '**/*.js',
+        app + '**/*.js'
     ],
     alljs: [
         app + 'scripts/**/*.js',
         app + 'app.js'
     ],
-    vendorjs: [
-        './node_modules/bootstrap/dist/js/bootstrap.js',
-        './app/bower_components/'
-    ],
-    bower: {
-        json: require('./bower.json'),
-        directory: app +'bower_components/',
-        ignorePath: '../..'
-    },
-    defaultPort: 8000,
+    defaultPort: 8000
 };
 
 gulp.task('default', ['help']);
 
 gulp.task('vet', function () {
-    log('Analyzing sources with JSHint and JSCS');
+    log('TASK: Analyzing sources with JSHint and JSCS');
     return gulp
         .src(config.alljs)
         .pipe($.if(args.verbose, $.print()))
@@ -52,46 +42,24 @@ gulp.task('vet', function () {
 
 
 gulp.task('clean-styles', function () {
-    log('Clean styles: ./app/styles/css/*.css');
+    log('TASK: Clean styles: ./app/styles/css/*.css');
     return del(['./app/styles/bundle.css']);
 });
 
-gulp.task('concat-css', function () {
-    log('Concat CSS');
-    return gulp
-        .src('./app/styles/css/*.css')
-        .pipe($.concatCss('bundle.css'))
-        .pipe(gulp.dest('./app/styles'));
-});
+gulp.task('styles', ['clean-styles'], function () {
+    log('TASK: Compile Less --> ./app/styles/css');
 
-gulp.task('less-css', ['move-bootstrap-less'], function () {
-    log('Less CSS');
-    return gulp
-        .src('./app/styles/less/styles.less')
+    var cssFiles = gulp.src('./app/styles/less/*.less')
         .pipe($.less())
         .pipe(gulp.dest('./app/styles/css'));
-});
 
-gulp.task('minify-css', function () {
-    "use strict";
-    log('Minify CSS');
-    return gulp
-        .src('./app/styles/bundle.css')
-        .pipe($.sourcemaps.init())
-        .pipe($.minifyCss())
-        .pipe($.sourcemaps.write())
-        .pipe(gulp.dest('./app/styles/'));
-});
-
-gulp.task('styles', ['clean-styles', 'concat-css'], function () {
-    log('Compile Less --> ./app/styles/css');
-    return gulp.src('./app/styles/less/*.less')
-        .pipe($.less())
-        .pipe(gulp.dest('./app/styles/css'))
+    return gulp.src('./app/index.html')
+        .pipe($.inject(cssFiles, {relative: true}))
+        .pipe(gulp.dest('./app'));
 });
 
 gulp.task('concat-js', function () {
-    log('Concat JS --> ./app/all.js');
+    log('TASK: Concat JS --> ./app/all.js');
     return gulp
         .src(config.alljs)
         .pipe($.concat('all.js'))
@@ -99,15 +67,17 @@ gulp.task('concat-js', function () {
 });
 
 gulp.task('concat-bower', function() {
-    log('Concat Bower --> ./app/bower.js');
+    log('TASK: Concat Bower --> ./app/bower.js');
+    var lib = require('bower-files')();
+
     gulp
-        .src(bowerFiles.ext('js').files)
+        .src(lib.ext('js').files)
         .pipe($.concat('bower.js'))
         .pipe(gulp.dest('./app'));
 });
 
 gulp.task('uglify-bower', function () {
-    log('Uglify bower.js');
+    log('TASK: Uglify bower.js');
     gulp
         .src('./app/bower.js')
         .pipe($.uglify())
@@ -115,7 +85,7 @@ gulp.task('uglify-bower', function () {
 });
 
 gulp.task('uglify-js', function () {
-    log('Uglify all.js');
+    log('TASK: Uglify all.js');
     gulp
         .src('./app/all.js')
         .pipe($.uglify())
@@ -123,37 +93,48 @@ gulp.task('uglify-js', function () {
 });
 
 gulp.task('build', ['styles', 'concat-js', 'concat-bower'], function () {
-    log('Build');
+    log('TASK: Build');
 });
 
 gulp.task('build:prod', ['build', 'uglify-bower', 'uglify-js'], function () {
-    log('Build --> production');
+    log('TASK: Build:prod --> production');
 });
 
 // Watchers
 gulp.task('less-watcher', function () {
+    log('WATCH: less files --> running styles task');
     gulp.watch(['./app/styles/less/*.less'], ['styles']);
 });
 
 gulp.task('watch', function () {
-    gulp.watch(['./app/*.html', './app/**/*.html', './app/**/*.js', './app/styles/css/*.css'], ['reload']);
+    console.log('WATCH: app files --> running reload');
+    gulp.watch(['./app/*.html', './app/**/*.html', './app/**/*.js', './gulpfile.js'], ['reload']);
 });
 
 // Server
 gulp.task('connect', function() {
-    $.connect.server({
+    return $.connect.server({
         port: 8000,
         root: 'app',
         livereload: true
     });
 });
 
+gulp.task('open', function () {
+    var options = {
+        uri: 'http://localhost:8000/'
+    };
+
+    gulp.src('./app/index.html')
+        .pipe($.open(options));
+});
+
 gulp.task('reload', ['build'], function () {
-    gulp.src('./app/*.html')
+    return gulp.src('./app/*.html')
         .pipe($.connect.reload());
 });
 
-gulp.task('serve', ['connect', 'watch']);
+gulp.task('serve', ['build', 'connect', 'open', 'watch', 'less-watcher']);
 
 function log(msg) {
     if (typeof(msg) === 'object') {
