@@ -6,6 +6,17 @@ angular.module('tappr.beersearch', [])
     function init () {
         console.log('INIT');
         $scope.messages.push('BeerSearchCtrl is initted');
+
+        $http({
+            method: 'GET',
+            url: '//localhost:8001/category'
+        })
+            .success(function (data) {
+                $scope.categories = data;
+            })
+            .error(function (error) {
+                console.log('OOPS!', error);
+            })
     }
 
     init();

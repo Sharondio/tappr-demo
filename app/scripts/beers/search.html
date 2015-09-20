@@ -7,12 +7,16 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                Filters:
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <table>
+                <div class="filters">
+                    Filters:
+                    <div class="subfilter">
+                        Categories:
+                        <div  ng-repeat="cat in categories">
+                            <input type="checkbox" ng-model="filterItems[cat]"> {{cat}}
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered table-striped table-hover">
                     <thead>
                     <tr>
                         <th>Name</th>
@@ -22,10 +26,10 @@
                     </tr>
                     </thead>
                     <tbody ng-repeat="beer in beers">
-                    <tr>
+                    <tr ng-click="load(beer)">
                         <td>{{beer.name}}</td>
-                        <td>{{beer.style}}</td>
-                        <td>{{beer.category}}</td>
+                        <td>{{beer.style.name}}</td>
+                        <td>{{beer.category.name}}</td>
                         <td>{{beer.abv}}</td>
                     </tr>
                     </tbody>

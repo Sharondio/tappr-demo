@@ -61,9 +61,9 @@
   content: "";
   padding: 0;
 }
-.search {
+.searchinput {
   margin: 12px;
 }
-.search input {
+.searchinput input {
   width: 200px;
 }

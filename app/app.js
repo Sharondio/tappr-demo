@@ -18,7 +18,7 @@ app.config(['$routeProvider', function($routeProvider) {
         .otherwise({redirectTo: '/'});
 }]);
 
-app.controller('HeaderCtrl', function ($scope, $location, $rootScope, $location) {
+app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope) {
     console.log('initing HeaderCtrl');
 
     $scope.isActive = function (view) {
@@ -30,6 +30,9 @@ app.controller('HeaderCtrl', function ($scope, $location, $rootScope, $location)
 
         // Getting the search query data to the search controller
         $location.url('/beers');
-        $rootScope.$broadcast('search', $scope.query);
+        // Have to delay sending the query because the other controller has to be loaded.
+        $timeout(function () {
+            $rootScope.$broadcast('search', $scope.query);
+        }, 50);
     }
 });

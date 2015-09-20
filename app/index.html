@@ -11,8 +11,10 @@
     <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
 
     <!-- inject:css -->
+    <link rel="stylesheet" href="styles/css/detail.css">
     <link rel="stylesheet" href="styles/css/home.css">
     <link rel="stylesheet" href="styles/css/profile.css">
+    <link rel="stylesheet" href="styles/css/search.css">
     <link rel="stylesheet" href="styles/css/styles.css">
     <!-- endinject -->
 </head>
@@ -36,7 +38,7 @@
                 <li ng-class="{active: isActive('/profile')}"><a href="/#/profile">Profile</a></li>
                 <li ng-class="{active: isActive('/beers')}"><a href="/#/beers">Beer Search</a></li>
             </ul>
-            <div class="search pull-right">
+            <div class="searchinput pull-right">
                 <input type="text" ng-model="query">
                 <button type="button" ng-click="search()">Search</button>
             </div>
