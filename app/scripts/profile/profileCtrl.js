@@ -32,22 +32,6 @@ angular.module('tappr.profile', [])
 
     init();
 
-    $rootScope.$on('search', function (event, data) {
-        "use strict";
-        console.log('SEARCHING: ', event, data);
-        $http({
-            method: 'GET',
-            url: '//localhost:8001/beers'
-        })
-            .success(function (data) {
-                $scope.beers = data;
-                console.log('beers found: ', data);
-            })
-            .error(function (error) {
-                console.log('OOPS!', error);
-            });
-    });
-
     $scope.unFavorite = function(beer, index) {
         console.log('UnFavorite beer: ', beer, index);
         $http({
