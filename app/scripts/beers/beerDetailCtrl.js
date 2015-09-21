@@ -60,10 +60,9 @@ angular.module('tappr.beerdetail', [])
                     method: 'POST',
                     url: '//localhost:8001/user/' + $scope.user.username + "/rating",
                     data: {
-                        beer: {
-                            name: $scope.beer.name,
-                            rating: $scope.ratingValue
-                        }
+                        id: $scope.beer.id,
+                        name: $scope.beer.name,
+                        rating: $scope.ratingValue
                     }
                 }).success(function (data) {
 
@@ -79,16 +78,17 @@ angular.module('tappr.beerdetail', [])
     $scope.favorite = function () {
         $http({
             method: 'POST',
-            url: '//localhost:8001/user/' + $scope.user.username + "/favorite",
+            url: '//localhost:8001/user/' + $scope.user.username + '/favorite',
             data: {
-                'beername': $scope.beer.name
+                'name': $scope.beer.name,
+                'id': $scope.beer.id
             }
         }).success(function (data) {
             $scope.isFavorite = true;
         }).error(function (error) {
             console.log('OOPS!', error);
         });
-    }
+    };
 
     $scope.unFavorite = function () {
         $http({

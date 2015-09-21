@@ -48,6 +48,13 @@
   width: 100px;
   text-align: center;
 }
+.profile .date {
+  width: 200px;
+}
+.profile .rating {
+  width: 70px;
+  text-align: center;
+}
 /* app css stylesheet */
 .star-rating {
   margin: 0;

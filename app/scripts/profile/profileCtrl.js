@@ -36,7 +36,7 @@ angular.module('tappr.profile', [])
         console.log('UnFavorite beer: ', beer, index);
         $http({
             method: 'DELETE',
-            url: '//localhost:8001/user/' + $scope.user.username + '/favorite/' + beer
+            url: '//localhost:8001/user/' + $scope.user.username + '/favorite/beer/' + beer.id
         }).success(function () {
             $scope.user.favorites.splice(index, 1);
         }).error(function (error) {
@@ -48,7 +48,7 @@ angular.module('tappr.profile', [])
         console.log('UnRate beer: ', beer);
         $http({
             method: 'DELETE',
-            url: '//localhost:8001/user/' + $scope.user.username + '/rating/' + beer.beername
+            url: '//localhost:8001/user/' + $scope.user.username + '/rating/beer/' + beer.id
         }).success(function () {
             $scope.user.ratings.splice(index, 1);
         }).error(function (error) {
