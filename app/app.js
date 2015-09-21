@@ -21,6 +21,14 @@ app.config(['$routeProvider', function($routeProvider) {
 app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope, $cookieStore) {
     console.log('initing HeaderCtrl');
 
+    $rootScope.$on('$locationChangeStart', function(event, next, current) {
+        if (!$cookieStore.get('login')) {
+            console.log( event, next, current );
+            //event.preventDefault();
+            //$location.url('/');
+        }
+    });
+
     if ($cookieStore.get('login')) {
         $scope.user = $cookieStore.get('login');
         $rootScope.user = $cookieStore.get('login');
