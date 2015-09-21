@@ -56,11 +56,9 @@ angular.module('tappr.beerdetail', [])
                             rating: $scope.ratingValue
                         }
                     }
-                })
-                .success(function (data) {
+                }).success(function (data) {
 
-                })
-                .error(function (error) {
+                }).error(function (error) {
                     console.log('OOPS!', error);
                 });
             }
@@ -69,9 +67,30 @@ angular.module('tappr.beerdetail', [])
 
     init();
 
-            $scope.favorite = function () {
-
+    $scope.favorite = function () {
+        $http({
+            method: 'POST',
+            url: '//localhost:8001/user/' + $scope.user.username + "/favorite",
+            data: {
+                'beername': $scope.beer.name
             }
+        }).success(function (data) {
+            $scope.isFavorite = true;
+        }).error(function (error) {
+            console.log('OOPS!', error);
+        });
+    }
+
+    $scope.unFavorite = function () {
+        $http({
+            method: 'DELETE',
+            url: '//localhost:8001/user/' + $scope.user.username + '/favorite/' + $scope.beer.name
+        }).success(function (data) {
+            $scope.isFavorite = false;
+        }).error(function (error) {
+            console.log('OOPS!', error);
+        });
+    };
 
     $scope.toggle = function(index) {
         console.log('Toggle Rating: ', index);
