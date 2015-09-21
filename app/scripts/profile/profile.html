@@ -21,7 +21,7 @@
                         <td>{{fav}}</td>
                         <td></td>
                         <td>
-                            <button type="button" class="btn btn-default btn-sm" ng-click="unFavorite()">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="unFavorite(fav, $index)">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             </button>
                         </td>
@@ -50,7 +50,7 @@
                         <td>{{rating.added | date:'medium':'en_US'}}</td>
                         <td>{{rating.updated | date:'medium':'en_US'}}</td>
                         <td>
-                            <button type="button" class="btn btn-default btn-sm" ng-click="unRate()">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="unRate(rating, $index)">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             </button>
                         </td>
