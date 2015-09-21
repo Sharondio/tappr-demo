@@ -15,38 +15,46 @@ angular.module('tappr.beerdetail', [])
                 url: '//localhost:8001/beer/' + $routeParams.id
             })
                 .success(function (data) {
-                    $scope.beer = data[0];
-                    updateStars(true);
-                    //$http({
-                    //    method: 'GET',
-                    //    url: '//localhost:8001/user/' + $rootScope.user.username + '/favorite/' + $scope.beer.name
-                    //})
-                    //    .success(function (data) {
-                    //        console.log('checking favorite stataus: ', data);
-                    //    })
-                    //    .error( function (error, data) {
-                    //        console.log('OOPS!', error);
-                    //    });
+
                     console.log('beer found: ', data[0]);
+                    $scope.beer = data[0];
+
+                    // check rating
+                    $http({
+                        method: 'GET',
+                        url: '//localhost:8001/user/' + $scope.user.username + '/rating/beer/' + $scope.beer.id
+                    }).success(function (data) {
+                        console.log('GET RATING: ', data);
+                        $scope.ratingValue = data.rating;
+                        updateStars(true);
+                    }).error(function (error, data) {
+                        if (data === 404) {
+                            $scope.ratingValue = 0;
+                            updateStars(true);
+                        } else {
+                            console.log('OOPS!', error, data);
+                        }
+                    });
+
+                    // check favorites status
+                    $http({
+                        method: 'GET',
+                        url: '//localhost:8001/user/' + $scope.user.username + '/favorite/beer/' + $scope.beer.id
+                    }).success(function (data) {
+                        console.log('IS FAVORITE: ', data);
+                        $scope.isFavorite = true;
+                    }).error (function (error, data) {
+                        console.log('OOPS!', error, data);
+                    });
+
                 })
                 .error(function (error) {
                     console.log('OOPS!', error);
                 });
+
         } else {
             $location.url('/');
         }
-
-        //TODO Need rating value from profile if it exists
-        $http({
-            method: 'GET',
-            url: '//localhost:8001/user/' + $scope.user.username + '/rating'
-        }).success(function (data) {
-            console.log('GET RATING: ', data);
-        }).error(function (error) {
-            console.log('OOPS!', error);
-        })
-
-        $scope.ratingValue = 0;
 
         updateStars = function (init) {
             $scope.stars = [];
@@ -78,7 +86,7 @@ angular.module('tappr.beerdetail', [])
     $scope.favorite = function () {
         $http({
             method: 'POST',
-            url: '//localhost:8001/user/' + $scope.user.username + '/favorite',
+            url: '//localhost:8001/user/' + $scope.user.username + '/favorite/beer',
             data: {
                 'name': $scope.beer.name,
                 'id': $scope.beer.id
@@ -93,7 +101,7 @@ angular.module('tappr.beerdetail', [])
     $scope.unFavorite = function () {
         $http({
             method: 'DELETE',
-            url: '//localhost:8001/user/' + $scope.user.username + '/favorite/' + $scope.beer.name
+            url: '//localhost:8001/user/' + $scope.user.username + '/favorite/beer/' + $scope.beer.id
         }).success(function (data) {
             $scope.isFavorite = false;
         }).error(function (error) {
