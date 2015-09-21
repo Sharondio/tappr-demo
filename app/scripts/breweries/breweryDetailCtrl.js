@@ -117,12 +117,6 @@ angular.module('tappr.beerdetail', [])
             //TODO: Save Rating
         }
     };
-
-    $scope.goBack = function () {
-        console.log('go back')
-        $location.url('/beers');
-    }
-
     $scope.$watch('ratingValue', function(newValue) {
         if (newValue) {
             updateStars();

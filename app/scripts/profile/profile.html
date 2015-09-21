@@ -12,14 +12,14 @@
                     <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Date Added</th>
+                        <th class="date">Date Added</th>
                         <th>Remove</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="fav in user.favorites">
-                        <td>{{fav}}</td>
-                        <td></td>
+                        <td ng-click="goto(fav)">{{fav.name}}</td>
+                        <td class="date" ng-click="goto(fav)">{{fav.added | date:'medium':'en_US'}}</td>
                         <td>
                             <button type="button" class="btn btn-default btn-sm" ng-click="unFavorite(fav, $index)">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
@@ -37,18 +37,18 @@
                     <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Rating</th>
-                        <th>Date Added</th>
-                        <th>Date Updated</th>
+                        <th class="rating">Rating</th>
+                        <th class="date">Date Updated</th>
+                        <th class="date">Date Added</th>
                         <th>Remove</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="rating in user.ratings">
-                        <td>{{rating.beername}}</td>
-                        <td>{{rating.rating}}</td>
-                        <td>{{rating.added | date:'medium':'en_US'}}</td>
-                        <td>{{rating.updated | date:'medium':'en_US'}}</td>
+                        <td ng-click="goto(rating)">{{rating.name}}</td>
+                        <td class="rating" ng-click="goto(rating)">{{rating.rating}}</td>
+                        <td class="date" ng-click="goto(rating)">{{rating.updated | date:'medium':'en_US'}}</td>
+                        <td class="date" ng-click="goto(rating)">{{rating.added | date:'medium':'en_US'}}</td>
                         <td>
                             <button type="button" class="btn btn-default btn-sm" ng-click="unRate(rating, $index)">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
