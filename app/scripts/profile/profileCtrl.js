@@ -1,33 +1,32 @@
 angular.module('tappr.profile', [])
 
-.controller('ProfileCtrl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
+.controller('ProfileCtrl', ['$scope', '$http', '$location', function($scope, $http, $location) {
 
     function init () {
         console.log('INIT');
+
         //get ratings
         $http({
             method: 'GET',
-            url: '//localhost:8001/user/SharonDio/rating'
-        })
-            .success(function (data) {
-                $scope.user.ratings = data;
-                console.log( data );
-            })
-            .error(function (error) {
-                console.log('OOPS!', error);
-            });
+            url: '//localhost:8001/user/' + $scope.user.username + '/rating/beer'
+        }).success(function (data) {
+            $scope.user.ratings = data;
+            console.log( data );
+        }).error(function (error) {
+            console.log('OOPS! get ratings', error);
+        });
+
         //get favorites
         $http({
             method: 'GET',
-            url: '//localhost:8001/user/SharonDio/favorite'
-        })
-            .success(function (data) {
-                $scope.user.favorites = data;
-                console.log( data );
-            })
-            .error(function (error) {
-                console.log('OOPS!', error);
-            });
+            url: '//localhost:8001/user/' + $scope.user.username + '/favorite/beer'
+        }).success(function (data) {
+            $scope.user.favorites = data;
+            console.log( data );
+        }).error(function (error) {
+            console.log('OOPS! get favorites', error);
+        });
+
     }
 
     init();
@@ -55,4 +54,9 @@ angular.module('tappr.profile', [])
             console.log('OOPS!', error);
         });
     };
+
+    $scope.goto = function (beer) {
+        $location.url('/beers/' + beer.id);
+    };
+
 }]);

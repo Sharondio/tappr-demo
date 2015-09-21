@@ -17,7 +17,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="fav in user.favorites">
+                    <tr ng-repeat="fav in user.favorites" ng-click="goto(fav)">
                         <td>{{fav.name}}</td>
                         <td class="date">{{fav.added | date:'medium':'en_US'}}</td>
                         <td>
@@ -44,7 +44,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="rating in user.ratings">
+                    <tr ng-repeat="rating in user.ratings" ng-click="goto(rating)">
                         <td>{{rating.name}}</td>
                         <td class="rating">{{rating.rating}}</td>
                         <td class="date">{{rating.updated | date:'medium':'en_US'}}</td>

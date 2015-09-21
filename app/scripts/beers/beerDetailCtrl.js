@@ -44,6 +44,7 @@ angular.module('tappr.beerdetail', [])
                         console.log('IS FAVORITE: ', data);
                         $scope.isFavorite = true;
                     }).error (function (error, data) {
+                        $scope.isFavorite = false;
                         console.log('OOPS!', error, data);
                     });
 
@@ -66,7 +67,7 @@ angular.module('tappr.beerdetail', [])
             if (!init) {
                 $http({
                     method: 'POST',
-                    url: '//localhost:8001/user/' + $scope.user.username + "/rating",
+                    url: '//localhost:8001/user/' + $scope.user.username + "/rating/beer",
                     data: {
                         id: $scope.beer.id,
                         name: $scope.beer.name,
