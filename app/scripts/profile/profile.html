@@ -17,9 +17,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="fav in user.favorites" ng-click="goto(fav)">
-                        <td>{{fav.name}}</td>
-                        <td class="date">{{fav.added | date:'medium':'en_US'}}</td>
+                    <tr ng-repeat="fav in user.favorites">
+                        <td ng-click="goto(fav)">{{fav.name}}</td>
+                        <td class="date" ng-click="goto(fav)">{{fav.added | date:'medium':'en_US'}}</td>
                         <td>
                             <button type="button" class="btn btn-default btn-sm" ng-click="unFavorite(fav, $index)">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
@@ -44,11 +44,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="rating in user.ratings" ng-click="goto(rating)">
-                        <td>{{rating.name}}</td>
-                        <td class="rating">{{rating.rating}}</td>
-                        <td class="date">{{rating.updated | date:'medium':'en_US'}}</td>
-                        <td class="date">{{rating.added | date:'medium':'en_US'}}</td>
+                    <tr ng-repeat="rating in user.ratings">
+                        <td ng-click="goto(rating)">{{rating.name}}</td>
+                        <td class="rating" ng-click="goto(rating)">{{rating.rating}}</td>
+                        <td class="date" ng-click="goto(rating)">{{rating.updated | date:'medium':'en_US'}}</td>
+                        <td class="date" ng-click="goto(rating)">{{rating.added | date:'medium':'en_US'}}</td>
                         <td>
                             <button type="button" class="btn btn-default btn-sm" ng-click="unRate(rating, $index)">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
