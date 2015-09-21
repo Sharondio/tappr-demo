@@ -37,6 +37,15 @@ angular.module('tappr.beerdetail', [])
         }
 
         //TODO Need rating value from profile if it exists
+        $http({
+            method: 'GET',
+            url: '//localhost:8001/user/' + $scope.user.username + '/rating'
+        }).success(function (data) {
+            console.log('GET RATING: ', data);
+        }).error(function (error) {
+            console.log('OOPS!', error);
+        })
+
         $scope.ratingValue = 0;
 
         updateStars = function (init) {

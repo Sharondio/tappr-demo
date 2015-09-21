@@ -35,7 +35,18 @@
 .profile {
   position: absolute;
   top: 40px;
-  width: 100% !important;
+  width: 80% !important;
+}
+.profile table {
+  width: 100%;
+}
+.profile table tr td:last-child {
+  width: 100px;
+  text-align: center;
+}
+.profile table tr th:last-child {
+  width: 100px;
+  text-align: center;
 }
 /* app css stylesheet */
 .star-rating {
