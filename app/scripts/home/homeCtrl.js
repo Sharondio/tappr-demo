@@ -15,6 +15,7 @@ angular.module('tappr.home', [])
 
             if ($cookieStore.get('login')) {
                 $scope.user = $cookieStore.get('login');
+                $rootScope.user = $cookieStore.get('login');
                 console.log('already logged in!', $cookieStore.get('login'), $scope.user);
             }
         }

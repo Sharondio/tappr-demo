@@ -1,6 +1,7 @@
 angular.module('tappr.beersearch', [])
 
-.controller('BeerSearchCtrl', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
+.controller('BeerSearchCtrl', ['$scope', '$rootScope', '$http', '$location',
+        function($scope, $rootScope, $http, $location) {
     $scope.messages = [];
 
     function init () {
@@ -43,7 +44,7 @@ angular.module('tappr.beersearch', [])
         console.log('SEARCHING from beerSearchCtrl: ', event, data);
         $http({
             method: 'GET',
-            url: '//localhost:8001/beer/q=' + data
+            url: '//localhost:8001/beer?q=' + data
         })
             .success(function (data) {
                 $scope.beers = data;
@@ -53,6 +54,11 @@ angular.module('tappr.beersearch', [])
                 console.log('OOPS!', error);
             });
     });
+
+    $scope.load = function (beer) {
+        console.log('Loading beer: ', beer);
+        $location.url('/beers/' + beer.id);
+    };
 
     $scope.catFilter = function(beer) {
         return $scope.filterItems[beer.category];

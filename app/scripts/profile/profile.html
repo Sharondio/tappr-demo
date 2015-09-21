@@ -2,12 +2,61 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h2>Profile for {{user.username}}</h2>
+                <h2>{{user.username}} Profile</h2>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                Blah
+               <label>Favorites:</label>
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date Added</th>
+                        <th>Remove</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="fav in user.favorites">
+                        <td>{{fav}}</td>
+                        <td></td>
+                        <td>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="unFavorite(fav, $index)">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label>Rated Beers:</label>
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Rating</th>
+                        <th>Date Added</th>
+                        <th>Date Updated</th>
+                        <th>Remove</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="rating in user.ratings">
+                        <td>{{rating.beername}}</td>
+                        <td>{{rating.rating}}</td>
+                        <td>{{rating.added | date:'medium':'en_US'}}</td>
+                        <td>{{rating.updated | date:'medium':'en_US'}}</td>
+                        <td>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="unRate(rating, $index)">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

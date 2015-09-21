@@ -18,8 +18,13 @@ app.config(['$routeProvider', function($routeProvider) {
         .otherwise({redirectTo: '/'});
 }]);
 
-app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope) {
+app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope, $cookieStore) {
     console.log('initing HeaderCtrl');
+
+    if ($cookieStore.get('login')) {
+        $scope.user = $cookieStore.get('login');
+        $rootScope.user = $cookieStore.get('login');
+    }
 
     $scope.isActive = function (view) {
         return (view === $location.path());
@@ -27,12 +32,19 @@ app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope) 
 
     $scope.search = function () {
         console.log('HeaderCtrl: search: ', $scope.query);
-
         // Getting the search query data to the search controller
         $location.url('/beers');
         // Have to delay sending the query because the other controller has to be loaded.
         $timeout(function () {
             $rootScope.$broadcast('search', $scope.query);
         }, 50);
-    }
+    };
+
+    $scope.logout = function () {
+        $cookieStore.remove('login');
+        $scope.user = {};
+        $rootScope.user = {};
+        $location.url('/');
+    };
+
 });

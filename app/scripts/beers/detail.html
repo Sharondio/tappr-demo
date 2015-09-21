@@ -6,8 +6,57 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-md-3">
+                <label>Rating:</label>
+                <ul class="star-rating">
+                    <li ng-repeat="star in stars" class="star" ng-class="{filled: star.filled}" ng-click="toggle($index)">
+                        <i class="fa fa-star"></i>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <div class="pull-right favorites">
+                    <label>
+                        <span ng-show="isFavorite">Remove from</span>
+                        <span ng-hide="isFavorite">Add to</span> Favorites:
+                    </label>
+                    <button ng-hide="isFavorite" type="button" class="btn btn-default btn-lg" ng-click="favorite()">
+                        <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
+                    </button>
+                    <button ng-show="isFavorite" type="button" class="btn btn-default btn-lg" ng-click="unFavorite()">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-12">
-
+                <table class="table table-bordered">
+                    <tr>
+                        <td><label>Name:</label></td>
+                        <td>{{beer.name}}</td>
+                    </tr>
+                    <tr>
+                        <td><label>Category:</label></td>
+                        <td>{{beer.category}}</td>
+                    </tr>
+                    <tr>
+                        <td><label>Style:</label></td>
+                        <td>{{beer.style}}</td>
+                    </tr>
+                    <tr>
+                        <td><label>Brewery:</label></td>
+                        <td>{{beer.brewery}}</td>
+                    </tr>
+                    <tr>
+                        <td><label>ABV:</label></td>
+                        <td>{{beer.abv}}</td>
+                    </tr>
+                    <tr>
+                        <td><label>Description:</label></td>
+                        <td>{{beer.descript}}</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>

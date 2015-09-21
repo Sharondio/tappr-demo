@@ -9,6 +9,7 @@
 
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- inject:css -->
     <link rel="stylesheet" href="styles/css/detail.css">
@@ -37,12 +38,15 @@
                 <li ng-class="{active: isActive('/')}"><a href="/#/">Home</a></li>
                 <li ng-class="{active: isActive('/profile')}"><a href="/#/profile">Profile</a></li>
                 <li ng-class="{active: isActive('/beers')}"><a href="/#/beers">Beer Search</a></li>
+                <li><a ng-click="logout()">Logout</a></li>
             </ul>
             <div class="searchinput pull-right">
-                <input type="text" ng-model="query">
-                <button type="button" ng-click="search()">Search</button>
+                <form ng-submit="search()">
+                    <input type="text" ng-model="query">
+                    <button type="button" ng-click="search()">Search</button>
+                </form>
             </div>
-        </div><!--/.nav-collapse -->
+        </div>
     </div>
 </nav>
 
