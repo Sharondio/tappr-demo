@@ -6,11 +6,16 @@ angular.module('tappr.beersearch', [])
 
     function init () {
         console.log('INIT');
+
+        var url = '//localhost:8001/';
+        var getBeerUrl = url + 'beer';
+        var getCategoryUrl = url + 'category';
+
         $scope.sortValue = 'name';
 
         $http({
             method: 'GET',
-            url: '//localhost:8001/category'
+            url: url + 'category'
         })
             .success(function (data) {
                 $scope.categories = data;
@@ -24,9 +29,14 @@ angular.module('tappr.beersearch', [])
             });
 
         // initial search
+        if ($rootScope.query) {
+            getBeerUrl =  url + 'beer?q=' + $rootScope.query;
+        } else {
+            getBeerUrl = url + 'beer';
+        }
         $http({
             method: 'GET',
-            url: '//localhost:8001/beer'
+            url: getBeerUrl
         })
             .success(function (data) {
                 $scope.beers = data;
