@@ -1,0 +1,23 @@
+.profile {
+  position: absolute;
+  top: 40px;
+  width: 80% !important;
+}
+.profile table {
+  width: 100%;
+}
+.profile table tr td:last-child {
+  width: 100px;
+  text-align: center;
+}
+.profile table tr th:last-child {
+  width: 100px;
+  text-align: center;
+}
+.profile .date {
+  width: 200px;
+}
+.profile .rating {
+  width: 70px;
+  text-align: center;
+}

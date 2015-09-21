@@ -1,0 +1,11 @@
+.detail {
+  position: absolute;
+  top: 40px;
+  width: 80% !important;
+}
+.detail table {
+  width: 100%;
+}
+.detail .favorites {
+  margin-bottom: 10px;
+}
