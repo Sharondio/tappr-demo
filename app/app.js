@@ -34,6 +34,7 @@ app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope, 
         console.log('HeaderCtrl: search: ', $scope.query);
         // Getting the search query data to the search controller
         $location.url('/beers');
+        $rootScope.query = $scope.query;
         // Have to delay sending the query because the other controller has to be loaded.
         $timeout(function () {
             $rootScope.$broadcast('search', $scope.query);
