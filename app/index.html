@@ -38,6 +38,7 @@
                 <li ng-class="{active: isActive('/')}"><a href="/#/">Home</a></li>
                 <li ng-class="{active: isActive('/profile')}"><a href="/#/profile">Profile</a></li>
                 <li ng-class="{active: isActive('/beers')}"><a href="/#/beers">Beer Search</a></li>
+                <li><a ng-click="logout()">Logout</a></li>
             </ul>
             <div class="searchinput pull-right">
                 <input type="text" ng-model="query">

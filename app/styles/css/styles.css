@@ -40,7 +40,7 @@
 /* app css stylesheet */
 .star-rating {
   margin: 0;
-  padding: 0;
+  padding: 10px 0 10px 0;
   display: inline-block;
 }
 .star-rating .star {

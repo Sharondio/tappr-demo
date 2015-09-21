@@ -44,7 +44,7 @@ angular.module('tappr.beersearch', [])
         console.log('SEARCHING from beerSearchCtrl: ', event, data);
         $http({
             method: 'GET',
-            url: '//localhost:8001/beer/q=' + data
+            url: '//localhost:8001/beer?q=' + data
         })
             .success(function (data) {
                 $scope.beers = data;

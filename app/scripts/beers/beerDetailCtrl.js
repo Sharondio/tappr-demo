@@ -16,6 +16,17 @@ angular.module('tappr.beerdetail', [])
             })
                 .success(function (data) {
                     $scope.beer = data[0];
+                    updateStars(true);
+                    //$http({
+                    //    method: 'GET',
+                    //    url: '//localhost:8001/user/' + $rootScope.user.username + '/favorite/' + $scope.beer.name
+                    //})
+                    //    .success(function (data) {
+                    //        console.log('checking favorite stataus: ', data);
+                    //    })
+                    //    .error( function (error, data) {
+                    //        console.log('OOPS!', error);
+                    //    });
                     console.log('beer found: ', data[0]);
                 })
                 .error(function (error) {
@@ -28,19 +39,39 @@ angular.module('tappr.beerdetail', [])
         //TODO Need rating value from profile if it exists
         $scope.ratingValue = 0;
 
-        updateStars = function () {
+        updateStars = function (init) {
             $scope.stars = [];
             for (var i = 0; i < $scope.starsNum; i++) {
                 $scope.stars.push({
                     filled: i < $scope.ratingValue
                 });
             }
-        };
+            if (!init) {
+                $http({
+                    method: 'POST',
+                    url: '//localhost:8001/user/' + $scope.user.username + "/rating",
+                    data: {
+                        beer: {
+                            name: $scope.beer.name,
+                            rating: $scope.ratingValue
+                        }
+                    }
+                })
+                .success(function (data) {
 
-        updateStars();
+                })
+                .error(function (error) {
+                    console.log('OOPS!', error);
+                });
+            }
+        };
     }
 
     init();
+
+            $scope.favorite = function () {
+
+            }
 
     $scope.toggle = function(index) {
         console.log('Toggle Rating: ', index);
@@ -49,15 +80,10 @@ angular.module('tappr.beerdetail', [])
             //TODO: Save Rating
         }
     };
-    $scope.$watch('ratingValue', function(oldValue, newValue) {
+    $scope.$watch('ratingValue', function(newValue) {
         if (newValue) {
             updateStars();
         }
-    });
-
-    $rootScope.$on('search', function (event, data) {
-        "use strict";
-        console.log('SEARCHING: ', event, data);
     });
 
 }]);
