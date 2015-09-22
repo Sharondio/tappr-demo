@@ -11,23 +11,27 @@ var app = angular.module('tappr', [
 
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
-        .when('/', {controller: 'HomeCtrl', templateUrl: 'scripts/home/home.html'})
-        .when('/profile', {controller: 'ProfileCtrl', templateUrl: 'scripts/profile/profile.html'})
-        .when('/beers', {controller: 'BeerSearchCtrl', templateUrl: 'scripts/beers/beer-search.html'})
-        .when('/beers/:id', {controller: 'BeerDetailCtrl', templateUrl: 'scripts/beers/beer-detail.html'})
+        .when('/', {secure: false, controller: 'HomeCtrl', templateUrl: 'scripts/home/home.html'})
+        .when('/profile', {secure: true, controller: 'ProfileCtrl', templateUrl: 'scripts/profile/profile.html'})
+        .when('/beers', {secure: true, controller: 'BeerSearchCtrl', templateUrl: 'scripts/beers/beer-search.html'})
+        .when('/beers/:id', {secure: true, controller: 'BeerDetailCtrl', templateUrl: 'scripts/beers/beer-detail.html'})
         .otherwise({redirectTo: '/'});
+}]);
+
+app.run(['$rootScope', '$location', '$cookieStore', function ($rootScope, $location, $cookieStore) {
+
+    $rootScope.$on('$routeChangeStart', function (event, next, current) {
+
+        if (next.$$route.secure && next.$$route.secure === true && !$cookieStore.get('login')) {
+            event.preventDefault();
+            $location.url('/');
+        }
+    });
+
 }]);
 
 app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope, $cookieStore) {
     console.log('initing HeaderCtrl');
-
-    $rootScope.$on('$locationChangeStart', function(event, next, current) {
-        if (!$cookieStore.get('login')) {
-            console.log( event, next, current );
-            //event.preventDefault();
-            //$location.url('/');
-        }
-    });
 
     if ($cookieStore.get('login')) {
         $scope.user = $cookieStore.get('login');
