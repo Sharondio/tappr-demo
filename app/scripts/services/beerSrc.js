@@ -1,59 +1,29 @@
 angular.module('tappr.services', []).
-    factory('beerSvc', function($http) {
+    factory('beerSrc', function($http) {
 
         var service = {};
-        var url = '//localhost:8001';
+        var url = '//localhost:8001/beer';
 
         service.find = function (queryTerm) {
-
-            var params = {};
-            if(queryTerm){
-                params.q = queryTerm;
-            }
-            return $http({
-                method: 'GET',
-                url: url + '/beer',
-                params: params
-            })
+            return $http.get(url + '?q=' + queryTerm)
                 .success(function (result) {
                     return result;
                 })
-                .error(function (data, status) {
+                .error( function (error) {
                     console.log('ERROR: beerSrv: find: ', error);
-                    return status;
+                    return;
                 });
-
         };
 
         service.findOne = function (id) {
-
-            return $http({
-                method: 'GET',
-                url: url + '/beer/' + id
-            })
+            return $http.get(url + '/' + id)
                 .success(function (result) {
                     return result;
                 })
-                .error(function (data, status) {
-                    console.log('ERROR: beerSrv: findOne: ', error);
-                    return status;
+                .error( function (error) {
+                    console.log('ERROR: beerSrv: find: ', error);
+                    return;
                 });
-
-        };
-
-        service.listCategories = function () {
-
-            return $http({
-                method: 'GET',
-                url: url + '/category'
-            })
-                .success(function (result) {
-                    return result;
-                })
-                .error(function (data, status) {
-                    return status;
-                });
-
         };
 
         return service;
