@@ -1,7 +1,7 @@
 angular.module('tappr.beersearch', [])
 
-.controller('BeerSearchCtrl', ['$scope', '$rootScope', '$http', '$location',
-        function($scope, $rootScope, $http, $location) {
+.controller('BeerSearchCtrl', ['$scope', '$rootScope', '$http', '$location', 'beerSvc',
+        function($scope, $rootScope, $http, $location, beerSvc) {
     $scope.messages = [];
 
     function init () {
@@ -12,6 +12,12 @@ angular.module('tappr.beersearch', [])
         var getCategoryUrl = url + 'category';
 
         $scope.sortValue = 'name';
+
+        beerSvc.findOne(25).then(function(result) {
+            console.log("THEN: ", result);
+        }, function (error) {
+
+        });
 
         $http({
             method: 'GET',

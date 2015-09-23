@@ -3,7 +3,7 @@ angular.module('tappr.home', [])
 .controller('HomeCtrl', ['$scope', '$http', '$cookieStore', '$rootScope',
         function($scope, $http, $cookieStore, $rootScope) {
 
-        var baseUrl = '//localhost:8001/user/',
+        var baseUrl = '//localhost:8001/user',
             queryUrl;
 
         function init () {
@@ -22,7 +22,7 @@ angular.module('tappr.home', [])
         init ();
 
         $scope.login = function() {
-            queryUrl = baseUrl + $scope.username;
+            queryUrl = baseUrl + '/' + $scope.username;
             $http({
                 method: 'GET',
                 url: queryUrl
@@ -35,15 +35,10 @@ angular.module('tappr.home', [])
                 .error(function (error, code) {
                     console.log('OOPS!', code);
                     if (code == '404') {
-                        var newUser = {
-                            username: $scope.username,
-                            favorites: [],
-                            ratings: []
-                        };
                         $http({
                             method: 'POST',
                             url: baseUrl,
-                            data: newUser
+                            data: {username: $scope.username}
                         })
                             .success(function (data) {
                                 $scope.user = data;
