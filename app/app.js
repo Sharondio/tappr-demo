@@ -6,7 +6,8 @@ var app = angular.module('tappr', [
     'tappr.home',
     'tappr.profile',
     'tappr.beersearch',
-    'tappr.beerdetail'
+    'tappr.beerdetail',
+    'tappr.services'
 ]);
 
 app.config(['$routeProvider', function($routeProvider) {
