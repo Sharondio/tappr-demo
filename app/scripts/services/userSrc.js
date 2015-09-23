@@ -7,7 +7,34 @@ angular.module('tappr.services').
         service.login = function (username) {
             return $http({
                 method: 'GET',
-                url: url + '/' + id
+                url: url + '/' + username
+            }).success(function (results) {
+                return results;
+            }).error(function (error, code) {
+                if (code === 404) {
+                    $http({
+                        method: 'POST',
+                        url: baseUrl,
+                        results: {username: $scope.username}
+                    })
+                    .success(function (results) {
+                        $cookieStore.put('login', results);
+                        return results;
+                    })
+                    .error(function (error, code) {
+                        console.log('ERROR: userSrc: login: ', error);
+                        return false;
+                    });
+                } else {
+                    console.log('ERROR: userSrc: login: ', error);
+                }
+            });
+        };
+
+        service.create = function (username) {
+            return $http({
+                method: 'POST',
+                url: url + '/' + username
             }).success(function (results) {
                 return results;
             }).error(function (error, code) {
