@@ -13,62 +13,55 @@ angular.module('tappr.beersearch', [])
 
         $scope.sortValue = 'name';
 
-        beerSrc.findOne(25).then(function(result) {
-            console.log("THEN: ", result);
-        }, function (error) {
-
-        });
-
-        $http({
-            method: 'GET',
-            url: url + 'category'
-        })
-            .success(function (data) {
-                $scope.categories = data;
-                $scope.filterItems = {};
-                for(var cat in $scope.categories) {
-                    $scope.filterItems[$scope.categories[cat]] = true;
+        beerSrc.listCategories()
+            .then(
+                function(result){
+                    $scope.categories = result.data;
+                    $scope.filterItems = {};
+                    for(var cat in $scope.categories) {
+                        $scope.filterItems[$scope.categories[cat]] = true;
+                    }
+                },
+                function(error){
+                    console.log('OOPS!', error);
                 }
-            })
-            .error(function (error) {
-                console.log('OOPS!', error);
-            });
+            );
 
         // initial search
+        var searchParams;
         if ($rootScope.query) {
-            getBeerUrl =  url + 'beer?q=' + $rootScope.query;
-        } else {
-            getBeerUrl = url + 'beer';
+            searchParams = $rootScope.query;
         }
-        $http({
-            method: 'GET',
-            url: getBeerUrl
-        })
-            .success(function (data) {
-                $scope.beers = data;
-                console.log('beers found: ', data);
-            })
-            .error(function (error) {
-                console.log('OOPS!', error);
-            });
+
+        beerSrc.find( searchParams )
+            .then(
+                function(result){
+                    $scope.beers = result.data;
+                    console.log('beers found: ', result.data);
+                },
+                function(error){
+                    console.log('OOPS!', error);
+                }
+            );
+
     }
 
     init();
 
     $rootScope.$on('search', function (event, data) {
-        "use strict";
         console.log('SEARCHING from beerSearchCtrl: ', event, data);
-        $http({
-            method: 'GET',
-            url: '//localhost:8001/beer?q=' + data
-        })
-            .success(function (data) {
-                $scope.beers = data;
-                console.log('beers found: ', data);
-            })
-            .error(function (error) {
-                console.log('OOPS!', error);
-            });
+
+        beerSrc.find( data )
+            .then(
+                function(result){
+                    $scope.beers = data;
+                    console.log('beers found: ', data);
+                },
+                function(error){
+                    console.log('OOPS!', error);
+                }
+            );
+
     });
 
     $scope.load = function (beer) {
