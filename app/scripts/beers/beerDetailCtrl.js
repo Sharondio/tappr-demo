@@ -15,6 +15,7 @@ angular.module('tappr.beerdetail', [])
             function foundBeerHandler (beer) {
                 $scope.beer = beer;
                 getRating(beer);
+                getFavorite(beer);
             }
 
             function getRating (beer) {
@@ -28,11 +29,11 @@ angular.module('tappr.beerdetail', [])
                 }
             }
 
-            function getFavoriteStatus (beer) {
-                return beerSrc.getFavoriteStatus(user, beer).then(getFavoriteStatusHandler(results),errorHandler(err));
+            function getFavorite (beer) {
+                return beerSrc.getFavorite(user, beer).then(getFavoriteHandler(results),errorHandler(err));
             }
 
-            function getFavoriteStatusHandler (results) {
+            function getFavoriteHandler (results) {
                 $scope.isFavorite = results;
             }
 
@@ -43,8 +44,9 @@ angular.module('tappr.beerdetail', [])
         } else {
             $location.url('/');
         }
-    }
+    };
 
+    init();
 
     function updateStars (init) {
         $scope.stars = [];
@@ -54,23 +56,13 @@ angular.module('tappr.beerdetail', [])
             });
         }
         if (!init) {
-            $http({
-                method: 'POST',
-                url: '//localhost:8001/user/' + $scope.user.username + "/rating/beer",
-                data: {
-                    id: $scope.beer.id,
-                    name: $scope.beer.name,
-                    rating: $scope.ratingValue
-                }
-            }).success(function (data) {
-
-            }).error(function (error) {
-                console.log('OOPS!', error);
-            });
+            userSrc.addRating(user, $scope.beer, $scope.ratingValue).then(addRatingHandler, errorHandler);
         }
     }
 
-    init();
+    function addRatingHandler () {
+        // do nothing
+    }
 
     $scope.favorite = function () {
         userSrc.addFavorite(user, beer).then(addFavoriteHandler(), errorHandler(error));

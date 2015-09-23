@@ -1,7 +1,7 @@
 angular.module('tappr.beersearch', [])
 
-.controller('BeerSearchCtrl', ['$scope', '$rootScope', '$http', '$location', 'beerSvc',
-        function($scope, $rootScope, $http, $location, beerSvc) {
+.controller('BeerSearchCtrl', ['$scope', '$rootScope', '$http', '$location', 'beerSrc',
+        function($scope, $rootScope, $http, $location, beerSrc) {
     $scope.messages = [];
 
     function init () {
@@ -13,7 +13,7 @@ angular.module('tappr.beersearch', [])
 
         $scope.sortValue = 'name';
 
-        beerSvc.findOne(25).then(function(result) {
+        beerSrc.findOne(25).then(function(result) {
             console.log("THEN: ", result);
         }, function (error) {
 

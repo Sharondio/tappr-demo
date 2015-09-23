@@ -31,8 +31,32 @@ angular.module('tappr.services').
             });
         };
 
+        service.getRatings = function (user) {
+            return $http({
+                method: 'GET',
+                url: url + '/' + user + '/rating/beer'
+            }).success(function (results) {
+                return results;
+            }).error(function (error) {
+                console.log('ERROR: userSrc: getRatings: ', error);
+                return false;
+            });
+        };
+
+        service.getFavorites = function (user) {
+            return $http({
+                method: 'GET',
+                url: url + '/' + user + '/favorite/beer'
+            }).success(function (results) {
+                return results;
+            }).error(function (error) {
+                console.log('ERROR: userSrc: getRatings: ', error);
+                return false;
+            });
+        };
+
         service.getRating = function (user, beer) {
-            $http({
+            return $http({
                 method: 'GET',
                 url: url + '/' + user + '/rating/beer/' + beer.id
             }).success(function (results) {
@@ -47,8 +71,8 @@ angular.module('tappr.services').
             });
         };
 
-        service.getFavoriteStatus = function (user, beer) {
-            $http({
+        service.getFavorite = function (user, beer) {
+            return $http({
                 method: 'GET',
                 url: url + '/' + user + '/favorite/beer/' + beer.id
             }).success(function (results) {
@@ -59,7 +83,7 @@ angular.module('tappr.services').
             });
         };
 
-        service.addFavorite = function (user,beer) {
+        service.addFavorite = function (user, beer) {
             return $http({
                 method: 'POST',
                 url: '//localhost:8001/user/' + user + '/favorite/beer',
@@ -75,7 +99,7 @@ angular.module('tappr.services').
             });
         };
 
-        service.unFavorite = function (user,beer) {
+        service.unFavorite = function (user, beer) {
             return $http({
                 method: 'DELETE',
                 url: '//localhost:8001/user/' + user + '/favorite/beer/' + beer.id,
@@ -83,6 +107,23 @@ angular.module('tappr.services').
                 return results;
             }).error(function (error) {
                 console.log('ERROR: userSvc: unFavorite', error);
+                return false;
+            });
+        };
+
+        service.addRating = function (user, beer, rating) {
+            return $http({
+                method: 'POST',
+                url: '//localhost:8001/user/' + user + '/rating/beer',
+                data: {
+                    'name': beer.name,
+                    'id': beer.id,
+                    'rating': rating
+                }
+            }).success(function (results) {
+                return results;
+            }).error(function (error) {
+                console.log('ERROR: userSvc: addRating', error);
                 return false;
             });
         };
