@@ -1,62 +1,44 @@
 angular.module('tappr.profile', [])
 
-.controller('ProfileCtrl', ['$scope', '$http', '$location', function($scope, $http, $location) {
+.controller('ProfileCtrl', ['$scope', '$rootScope', '$http', '$location', 'userSrc',
+        function($scope, $rootScope, $http, $location, userSrc) {
 
-    function init () {
-        console.log('INIT');
+            function init () {
+                console.log('INIT');
+                var user = $rootScope.user.username;
 
-        //get ratings
-        $http({
-            method: 'GET',
-            url: '//localhost:8001/user/' + $scope.user.username + '/rating/beer'
-        }).success(function (data) {
-            $scope.user.ratings = data;
-            console.log( data );
-        }).error(function (error) {
-            console.log('OOPS! get ratings', error);
-        });
+                //get ratings
+                userSrc.getRatings(user).then(getRatingsHandler, errorHandler);
 
-        //get favorites
-        $http({
-            method: 'GET',
-            url: '//localhost:8001/user/' + $scope.user.username + '/favorite/beer'
-        }).success(function (data) {
-            $scope.user.favorites = data;
-            console.log( data );
-        }).error(function (error) {
-            console.log('OOPS! get favorites', error);
-        });
+                function getRatingsHandler(results) {
+                    $scope.user.ratings = results.data;
+                }
 
-    }
+                //get favorites
+                userSrc.getFavorites(user).then(getFavoritesHandler, errorHandler);
 
-    init();
+                function getFavoritesHandler(results) {
+                    $scope.user.favorites = results.data;
+                }
 
-    $scope.unFavorite = function(beer, index) {
-        console.log('UnFavorite beer: ', beer, index);
-        $http({
-            method: 'DELETE',
-            url: '//localhost:8001/user/' + $scope.user.username + '/favorite/beer/' + beer.id
-        }).success(function () {
-            $scope.user.favorites.splice(index, 1);
-        }).error(function (error) {
-            console.log('OOPS!', error);
-        });
-    };
+            }
 
-    $scope.unRate = function(beer, index) {
-        console.log('UnRate beer: ', beer);
-        $http({
-            method: 'DELETE',
-            url: '//localhost:8001/user/' + $scope.user.username + '/rating/beer/' + beer.id
-        }).success(function () {
-            $scope.user.ratings.splice(index, 1);
-        }).error(function (error) {
-            console.log('OOPS!', error);
-        });
-    };
+            init();
 
-    $scope.goto = function (beer) {
-        $location.url('/beers/' + beer.id);
-    };
+            function errorHandler (error) {
+                console.log('OOPS!', error);
+            }
 
-}]);
+            $scope.unFavorite = function(beer, index) {
+                userSrc.unFavorite(user, beer).then(unFavoriteHandler(results, index), errorHandler);
+            };
+
+            function unFavoriteHandler (results, index) {
+                $scope.user.favorites.splice(index, 1);
+            }
+
+            $scope.goto = function (beer) {
+                $location.url('/beers/' + beer.id);
+            };
+
+        }]);
