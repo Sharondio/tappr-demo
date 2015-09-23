@@ -1,115 +1,93 @@
 angular.module('tappr.beerdetail', [])
 
-.controller('BeerDetailCtrl', ['$scope', '$rootScope', '$routeParams', '$location', '$http',
-        function($scope, $rootScope, $routeParams, $location, $http) {
-    $scope.messages = [];
-    var updateStars;
+.controller('BeerDetailCtrl', ['$scope', '$rootScope', '$routeParams', '$location', '$http', 'userSrc', 'beerSrc',
+        function($scope, $rootScope, $routeParams, $location, $http, userSrc, beerSrc) {
+
+            var user = $rootScope.user.username;
 
     function init () {
         console.log('INIT', $routeParams);
         $scope.starsNum = 5;
 
         if ($routeParams.id) {
-            $http({
-                method: 'GET',
-                url: '//localhost:8001/beer/' + $routeParams.id
-            })
-                .success(function (data) {
+            beerSrc.findOne($routeParams.id).then(foundBeerHandler(beer), errorHandler(err));
 
-                    console.log('beer found: ', data[0]);
-                    $scope.beer = data[0];
+            function foundBeerHandler (beer) {
+                $scope.beer = beer;
+                getRating(beer);
+            }
 
-                    // check rating
-                    $http({
-                        method: 'GET',
-                        url: '//localhost:8001/user/' + $scope.user.username + '/rating/beer/' + $scope.beer.id
-                    }).success(function (data) {
-                        console.log('GET RATING: ', data);
-                        $scope.ratingValue = data.rating;
-                        updateStars(true);
-                    }).error(function (error, data) {
-                        if (data === 404) {
-                            $scope.ratingValue = 0;
-                            updateStars(true);
-                        } else {
-                            console.log('OOPS!', error, data);
-                        }
-                    });
+            function getRating (beer) {
+                return beerSrc.getRating(user, beer).then(ratingHandler(beer), errorHandler(err));
+            }
 
-                    // check favorites status
-                    $http({
-                        method: 'GET',
-                        url: '//localhost:8001/user/' + $scope.user.username + '/favorite/beer/' + $scope.beer.id
-                    }).success(function (data) {
-                        console.log('IS FAVORITE: ', data);
-                        $scope.isFavorite = true;
-                    }).error (function (error, data) {
-                        $scope.isFavorite = false;
-                        console.log('OOPS!', error, data);
-                    });
+            function ratingHandler (results) {
+                $scope.ratingValue = 0;
+                if (results) {
+                    $scope.ratingValue = results.rating;
+                }
+            }
 
-                })
-                .error(function (error) {
-                    console.log('OOPS!', error);
-                });
+            function getFavoriteStatus (beer) {
+                return beerSrc.getFavoriteStatus(user, beer).then(getFavoriteStatusHandler(results),errorHandler(err));
+            }
+
+            function getFavoriteStatusHandler (results) {
+                $scope.isFavorite = results;
+            }
+
+            function errorHandler (error) {
+                console.log('OOPS!', error);
+            }
 
         } else {
             $location.url('/');
         }
+    }
 
-        updateStars = function (init) {
-            $scope.stars = [];
-            for (var i = 0; i < $scope.starsNum; i++) {
-                $scope.stars.push({
-                    filled: i < $scope.ratingValue
-                });
-            }
-            if (!init) {
-                $http({
-                    method: 'POST',
-                    url: '//localhost:8001/user/' + $scope.user.username + "/rating/beer",
-                    data: {
-                        id: $scope.beer.id,
-                        name: $scope.beer.name,
-                        rating: $scope.ratingValue
-                    }
-                }).success(function (data) {
 
-                }).error(function (error) {
-                    console.log('OOPS!', error);
-                });
-            }
-        };
+    function updateStars (init) {
+        $scope.stars = [];
+        for (var i = 0; i < $scope.starsNum; i++) {
+            $scope.stars.push({
+                filled: i < $scope.ratingValue
+            });
+        }
+        if (!init) {
+            $http({
+                method: 'POST',
+                url: '//localhost:8001/user/' + $scope.user.username + "/rating/beer",
+                data: {
+                    id: $scope.beer.id,
+                    name: $scope.beer.name,
+                    rating: $scope.ratingValue
+                }
+            }).success(function (data) {
+
+            }).error(function (error) {
+                console.log('OOPS!', error);
+            });
+        }
     }
 
     init();
 
     $scope.favorite = function () {
-        $http({
-            method: 'POST',
-            url: '//localhost:8001/user/' + $scope.user.username + '/favorite/beer',
-            data: {
-                'name': $scope.beer.name,
-                'id': $scope.beer.id
-            }
-        }).success(function (data) {
-            $scope.isFavorite = true;
-        }).error(function (error) {
-            console.log('OOPS!', error);
-        });
+        userSrc.addFavorite(user, beer).then(addFavoriteHandler(), errorHandler(error));
     };
+
+    function addFavoriteHandler () {
+        $scope.isFavorite = true;
+    }
 
     $scope.unFavorite = function () {
-        $http({
-            method: 'DELETE',
-            url: '//localhost:8001/user/' + $scope.user.username + '/favorite/beer/' + $scope.beer.id
-        }).success(function (data) {
-            $scope.isFavorite = false;
-        }).error(function (error) {
-            console.log('OOPS!', error);
-        });
+        UserSrc.unFavorite(user, beer).then(unFavoriteHandler(), errorHandler(error));
     };
 
+    function unFavoriteHandler () {
+        $scope.isFavorite = false;
+    }
+            
     $scope.toggle = function(index) {
         console.log('Toggle Rating: ', index);
         if ($scope.readonly == undefined || $scope.readonly === false){
