@@ -1,7 +1,7 @@
 angular.module('tappr.beersearch', [])
 
-.controller('BeerSearchCtrl', ['$scope', '$rootScope', '$location', 'beerSvc',
-        function($scope, $rootScope, $location, beerSvc) {
+.controller('BeerSearchCtrl', ['$scope', '$rootScope', '$location', 'beerSrc',
+        function($scope, $rootScope, $location, beerSrc) {
     $scope.messages = [];
 
     function init () {
@@ -13,7 +13,7 @@ angular.module('tappr.beersearch', [])
 
         $scope.sortValue = 'name';
 
-        beerSvc.listCategories()
+        beerSrc.listCategories()
             .then(
                 function(result){
                     $scope.categories = result.data;
@@ -33,7 +33,7 @@ angular.module('tappr.beersearch', [])
             searchParams = $rootScope.query;
         }
 
-        beerSvc.find( searchParams )
+        beerSrc.find( searchParams )
             .then(
                 function(result){
                     $scope.beers = result.data;
@@ -51,7 +51,7 @@ angular.module('tappr.beersearch', [])
     $rootScope.$on('search', function (event, data) {
         console.log('SEARCHING from beerSearchCtrl: ', event, data);
 
-        beerSvc.find( data )
+        beerSrc.find( data )
             .then(
                 function(result){
                     $scope.beers = data;
