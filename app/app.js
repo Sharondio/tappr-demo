@@ -11,11 +11,11 @@ var app = angular.module('tappr', [
 
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
-        .when('/', {secure: false, controller: 'HomeCtrl', templateUrl: 'scripts/home/home.html'})
-        .when('/profile', {secure: true, controller: 'ProfileCtrl', templateUrl: 'scripts/profile/profile.html'})
-        .when('/beers', {secure: true, controller: 'BeerSearchCtrl', templateUrl: 'scripts/beers/beer-search.html'})
-        .when('/beers/:query', {secure: true, controller: 'BeerSearchCtrl', templateUrl: '/scripts/beers/beer-search.html'})
-        .when('/beers/detail/:id', {secure: true, controller: 'BeerDetailCtrl', templateUrl: 'scripts/beers/beer-detail.html'})
+        .when('/', {secure: false, controller: 'HomeCtrl', templateUrl: 'scripts/templates/home.html'})
+        .when('/profile', {secure: true, controller: 'ProfileCtrl', templateUrl: 'scripts/templates/profile.html'})
+        .when('/beers', {secure: true, controller: 'BeerSearchCtrl', templateUrl: 'scripts/templates/beer-search.html'})
+        .when('/beers/:query', {secure: true, controller: 'BeerSearchCtrl', templateUrl: '/scripts/templates/beer-search.html'})
+        .when('/beers/detail/:id', {secure: true, controller: 'BeerDetailCtrl', templateUrl: 'scripts/templates/beer-detail.html'})
         .otherwise({redirectTo: '/'});
 }]);
 
@@ -31,7 +31,7 @@ app.run(['$rootScope', '$location', '$cookieStore', function ($rootScope, $locat
 
 }]);
 
-app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope, $cookieStore) {
+app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope, $cookieStore, $route) {
     console.log('initing HeaderCtrl');
 
     if ($cookieStore.get('login')) {
@@ -47,6 +47,7 @@ app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope, 
         console.log('HeaderCtrl: search: ', $scope.query);
         $location.url('/beers/' + $scope.query);
         $rootScope.query = $scope.query;
+        $route.reload();
     };
 
     $scope.logout = function () {
@@ -54,6 +55,7 @@ app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope, 
         $scope.user = {};
         $rootScope.user = {};
         $location.url('/');
+        $route.reload();
     };
 
 });
