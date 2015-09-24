@@ -31,7 +31,7 @@ app.run(['$rootScope', '$location', '$cookieStore', function ($rootScope, $locat
 
 }]);
 
-app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope, $cookieStore) {
+app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope, messageSrc, $cookieStore) {
     console.log('initing HeaderCtrl');
 
     if ($cookieStore.get('login')) {
@@ -44,13 +44,10 @@ app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope, 
     };
 
     $scope.search = function () {
-        console.log('HeaderCtrl: search: ', $scope.query);
-        // Getting the search query data to the search controller
         $location.url('/beers');
-        $rootScope.query = $scope.query;
         // Have to delay sending the query because the other controller has to be loaded.
         $timeout(function () {
-            $rootScope.$broadcast('search', $scope.query);
+            messageSrc.broadcast($scope.query);
         }, 50);
     };
 
