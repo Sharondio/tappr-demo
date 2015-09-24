@@ -1,11 +1,11 @@
 angular.module('tappr.beersearch', [])
 
-.controller('BeerSearchCtrl', ['$scope', '$rootScope', '$http', '$location',
-        function($scope, $rootScope, $http, $location) {
+.controller('BeerSearchCtrl', ['$scope', '$rootScope', '$routeParams', '$http', '$location',
+        function($scope, $rootScope, $routeParams, $http, $location) {
     $scope.messages = [];
 
     function init () {
-        console.log('INIT');
+        console.log('INIT', $routeParams);
 
         var url = '//localhost:8001/';
         var getBeerUrl = url + 'beer';
