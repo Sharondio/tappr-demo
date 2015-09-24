@@ -5,25 +5,23 @@ BeerDetailCtrl.$inject = ['$scope', '$rootScope', '$routeParams', '$location', '
 
 function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, beerSrc) {
 
-    var vm = this;
-
-    vm.user = $rootScope.user;
+    var user = $rootScope.user.username;
 
     function init () {
         console.log('INIT', $routeParams);
         $scope.starsNum = 5;
 
         if ($routeParams.id) {
-            beerSrc.findOne($routeParams.id).then(foundBeerHandler(beer), errorHandler(error));
+            beerSrc.findOne($routeParams.id).then(foundBeerHandler, errorHandler);
 
             function foundBeerHandler (beer) {
-                $scope.beer = beer;
-                getRating(beer);
-                getFavorite(beer);
+                $scope.beer = beer.data[0];
+                getRating($scope.beer);
+                getFavorite($scope.beer);
             }
 
             function getRating (beer) {
-                return beerSrc.getRating(user, beer).then(ratingHandler(results), errorHandler(error));
+                return userSrc.getRating(user, beer).then(ratingHandler, errorHandler);
             }
 
             function ratingHandler (results) {
@@ -34,15 +32,11 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
             }
 
             function getFavorite (beer) {
-                return beerSrc.getFavorite(user, beer).then(getFavoriteHandler(results),errorHandler(error));
+                return userSrc.getFavorite(user, beer).then(getFavoriteHandler, errorHandler);
             }
 
             function getFavoriteHandler (results) {
                 $scope.isFavorite = results;
-            }
-
-            function errorHandler (error) {
-                console.log('OOPS!', error);
             }
 
         } else {
@@ -51,6 +45,10 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
     };
 
     init();
+
+    function errorHandler (error) {
+        console.log('OOPS!', error);
+    }
 
     function updateStars (init) {
         $scope.stars = [];
@@ -69,7 +67,7 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
     }
 
     $scope.favorite = function () {
-        userSrc.addFavorite(user, beer).then(addFavoriteHandler(), errorHandler(error));
+        userSrc.addFavorite(user, $scope.beer).then(addFavoriteHandler, errorHandler);
     };
 
     function addFavoriteHandler () {
@@ -77,7 +75,7 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
     }
 
     $scope.unFavorite = function () {
-        UserSrc.unFavorite(user, beer).then(unFavoriteHandler(), errorHandler(error));
+        UserSrc.unFavorite(user, $scope.beer).then(unFavoriteHandler, errorHandler);
     };
 
     function unFavoriteHandler () {

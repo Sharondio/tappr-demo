@@ -62,7 +62,7 @@ function userSrc ($http) {
         }).success(function (results) {
             return results;
         }).error(function (error, code) {
-            if (data === 404) {
+            if (code === 404) {
                 return false;
             } else {
                 console.log('ERROR: userSrc: getRating: ', error, code);
