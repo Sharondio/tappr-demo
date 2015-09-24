@@ -7,15 +7,15 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="login" ng-hide="user.username">
+                <div class="login" ng-hide="home.user.username">
                     <label>
                         UserName:
-                        <input type="text" ng-model="username">
+                        <input type="text" ng-model="home.username">
                     </label>
-                    <button type="button" ng-click="login()">Login</button>
+                    <button type="button" ng-click="home.login()">Login</button>
                 </div>
-                <div class="welcome" ng-show="user.username">
-                    Welcome {{user.username}}!
+                <div class="welcome" ng-show="home.user.username">
+                    Welcome {{home.user.username}}!
                 </div>
                 <div class="main-image">
                     <img class="img-responsive" src="images/pretty-beers.jpg">

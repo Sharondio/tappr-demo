@@ -1,23 +1,26 @@
 angular.module('tappr.beers')
     .controller('BeerSearchCtrl', BeerSearchCtrl);
 
-BeerSearchCtrl.$inject = ['$scope', '$location', 'beerSrc', 'messageSrc'];
+BeerSearchCtrl.$inject = ['$scope', '$location', '$routeParams', 'beerSrc', 'messageSrc'];
 
-function BeerSearchCtrl ($scope, $location, beerSrc, messageSrc) {
-    $scope.messages = [];
+function BeerSearchCtrl ($scope, $location, $routeParams, beerSrc, messageSrc) {
+    var vm = this;
+    vm.messages = [];
+
+    console.log('routeParams: ', $routeParams);
 
     function init () {
         console.log('INIT');
 
-        $scope.sortValue = 'name';
+        vm.sortValue = 'name';
 
         beerSrc.listCategories()
             .then(
             function(result){
-                $scope.categories = result.data;
-                $scope.filterItems = {};
-                for(var cat in $scope.categories) {
-                    $scope.filterItems[$scope.categories[cat]] = true;
+                vm.categories = result.data;
+                vm.filterItems = {};
+                for(var cat in vm.categories) {
+                    vm.filterItems[vm.categories[cat]] = true;
                 }
             },
             function(error){
@@ -31,7 +34,8 @@ function BeerSearchCtrl ($scope, $location, beerSrc, messageSrc) {
         beerSrc.find( searchParams )
             .then(
             function(result){
-                $scope.beers = result.data;
+                console.log('beers found: ', result.data);
+                vm.beers = result.data;
             },
             function(error){
                 console.log('OOPS!', error);
@@ -46,7 +50,7 @@ function BeerSearchCtrl ($scope, $location, beerSrc, messageSrc) {
         beerSrc.find( messageSrc.message )
             .then(
             function(result){
-                $scope.beers = result.data;
+                vm.beers = result.data;
             },
             function(error){
                 console.log('OOPS!', error);
@@ -54,12 +58,12 @@ function BeerSearchCtrl ($scope, $location, beerSrc, messageSrc) {
         );
     });
 
-    $scope.load = function (beer) {
+    vm.load = function (beer) {
         console.log('Loading beer: ', beer);
         $location.url('/beers/' + beer.id);
     };
 
-    $scope.catFilter = function(beer) {
-        return $scope.filterItems[beer.category];
+    vm.catFilter = function(beer) {
+        return vm.filterItems[beer.category];
     };
 }

@@ -2,15 +2,15 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <span class="glyphicon back-arrow glyphicon-circle-arrow-left" ng-click="goBack()"></span>
-                <h2>{{beer.name}}</h2>
+                <span class="glyphicon back-arrow glyphicon-circle-arrow-left" ng-click="detail.goBack()"></span>
+                <h2>{{detail.beer.name}}</h2>
             </div>
         </div>
         <div class="row">
             <div class="col-md-3">
                 <label>Rating:</label>
                 <ul class="star-rating">
-                    <li ng-repeat="star in stars" class="star" ng-class="{filled: star.filled}" ng-click="toggle($index)">
+                    <li ng-repeat="star in detail.stars" class="star" ng-class="{filled: detail.star.filled}" ng-click="detail.toggle($index)">
                         <i class="fa fa-star"></i>
                     </li>
                 </ul>
@@ -18,13 +18,13 @@
             <div class="col-md-9">
                 <div class="pull-right favorites">
                     <label>
-                        <span ng-show="isFavorite">Remove from</span>
-                        <span ng-hide="isFavorite">Add to</span> Favorites:
+                        <span ng-show="detail.isFavorite">Remove from</span>
+                        <span ng-hide="detail.isFavorite">Add to</span> Favorites:
                     </label>
-                    <button ng-hide="isFavorite" type="button" class="btn btn-default btn-lg" ng-click="favorite()">
+                    <button ng-hide="detail.isFavorite" type="button" class="btn btn-default btn-lg" ng-click="detail.favorite()">
                         <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
                     </button>
-                    <button ng-show="isFavorite" type="button" class="btn btn-default btn-lg" ng-click="unFavorite()">
+                    <button ng-show="detail.isFavorite" type="button" class="btn btn-default btn-lg" ng-click="detail.unFavorite()">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                 </div>
@@ -35,23 +35,23 @@
                 <table class="table table-bordered">
                     <tr>
                         <td><label>Category:</label></td>
-                        <td>{{beer.category}}</td>
+                        <td>{{detail.beer.category}}</td>
                     </tr>
                     <tr>
                         <td><label>Style:</label></td>
-                        <td>{{beer.style}}</td>
+                        <td>{{detail.beer.style}}</td>
                     </tr>
                     <tr>
                         <td><label>Brewery:</label></td>
-                        <td>{{beer.brewery}}</td>
+                        <td>{{detail.beer.brewery}}</td>
                     </tr>
                     <tr>
                         <td><label>ABV:</label></td>
-                        <td>{{beer.abv}}</td>
+                        <td>{{detail.beer.abv}}</td>
                     </tr>
                     <tr>
                         <td><label>Description:</label></td>
-                        <td>{{beer.descript}}</td>
+                        <td>{{detail.beer.descript}}</td>
                     </tr>
                 </table>
             </div>

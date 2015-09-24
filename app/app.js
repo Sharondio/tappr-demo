@@ -17,10 +17,10 @@ angular.module('tappr', [
 
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider
-            .when('/', {secure: false, controller: 'HomeCtrl', templateUrl: 'scripts/home/home.html'})
-            .when('/profile', {secure: true, controller: 'ProfileCtrl', templateUrl: 'scripts/profile/profile.html'})
-            .when('/beers', {secure: true, controller: 'BeerSearchCtrl', templateUrl: 'scripts/beers/beer-search.html'})
-            .when('/beers/:id', {secure: true, controller: 'BeerDetailCtrl', templateUrl: 'scripts/beers/beer-detail.html'})
+            .when('/', {secure: false, controller: 'HomeCtrl', controllerAs: 'home', templateUrl: 'scripts/home/home.html'})
+            .when('/profile', {secure: true, controller: 'ProfileCtrl', controllerAs: 'profile', templateUrl: 'scripts/profile/profile.html'})
+            .when('/beers', {secure: true, controller: 'BeerSearchCtrl', controllerAs: 'search', templateUrl: 'scripts/beers/beer-search.html'})
+            .when('/beer/:id', {secure: true, controller: 'BeerDetailCtrl', controllerAs: 'detail', templateUrl: 'scripts/beers/beer-detail.html'})
             .otherwise({redirectTo: '/'});
     }])
     .run(['$rootScope', '$location', '$cookieStore', function ($rootScope, $location, $cookieStore) {
