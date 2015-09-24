@@ -1,19 +1,15 @@
 angular.module('tappr.home')
     .controller('HomeCtrl', HomeCtrl);
 
-HomeCtrl.$inject = ['$scope', '$http', '$cookieStore', '$rootScope'];
+HomeCtrl.$inject = ['$scope', '$cookieStore', '$rootScope', 'userSrc'];
 
-function HomeCtrl ($scope, $http, $cookieStore, $rootScope) {
-
-    var baseUrl = '//localhost:8001/user',
-        queryUrl;
+function HomeCtrl ($scope, $cookieStore, $rootScope, userSrc) {
 
     function init () {
         console.log('INIT');
         $scope.messages = [];
         $scope.user = {};
         $scope.messages.push('HomeCtrl is initted');
-
 
         if ($cookieStore.get('login')) {
             $scope.user = $cookieStore.get('login');
@@ -24,51 +20,44 @@ function HomeCtrl ($scope, $http, $cookieStore, $rootScope) {
     init ();
 
     $scope.login = function() {
-        queryUrl = baseUrl + '/' + $scope.username;
-        $http({
-            method: 'GET',
-            url: queryUrl
-        })
-            .success(function (data) {
-                $scope.user = data;
-                $cookieStore.put('login', data);
-                console.log('homeCtrl: login: ', data );
-            })
-            .error(function (error, code) {
-                console.log('OOPS!', code);
-                if (code == '404') {
-                    $http({
-                        method: 'POST',
-                        url: baseUrl,
-                        data: {username: $scope.username}
-                    })
-                        .success(function (data) {
-                            $scope.user = data;
-                            $cookieStore.put('login', data);
-                            console.log('User added: ', data);
-                        })
-                        .error(function (error, code) {
-                            console.log('OOPS! ', error, code);
-                        });
+
+        userSrc.login($scope.username)
+            .then(
+            function(result) {
+                console.log(result);
+                $scope.user = result.data;
+                $cookieStore.put('login', result.data);
+                console.log('homeCtrl: login: ', result.data);
+            },
+            function(error) {
+
+                if (error.status === 404) {
+                    console.log('User not found: creating...');
+
+                    userSrc.create($scope.username)
+                        .then(
+                        function(result) {
+                            console.log('User created!');
+
+                            userSrc.login($scope.username)
+                                .then(
+                                function(result) {
+                                    $scope.user = result.data;
+                                    $cookieStore.put('login', result.data);
+
+                                    console.log('homeCtrl: login: ', result.data);
+                                },
+                                function(error) {
+                                    console.log('OOPS!', error);
+                                }
+                            );
+                        },
+                        function(error) {
+                            console.log('I tried my best, just can\'t get this person logged in.', error);
+                        }
+                    );
                 }
-            });
+            }
+        );
     };
-
-    $rootScope.$on('search', function (event, data) {
-        "use strict";
-        console.log('SEARCHING: ', event, data);
-        $http({
-            method: 'GET',
-            url: '//localhost:8001/beer',
-            data: {query: data}
-        })
-            .success(function (data) {
-                $scope.beers = data;
-                console.log('beers found: ', data);
-            })
-            .error(function (error) {
-                console.log('OOPS!', error);
-            });
-    });
-
 }
