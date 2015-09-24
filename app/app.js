@@ -14,7 +14,8 @@ app.config(['$routeProvider', function($routeProvider) {
         .when('/', {secure: false, controller: 'HomeCtrl', templateUrl: 'scripts/home/home.html'})
         .when('/profile', {secure: true, controller: 'ProfileCtrl', templateUrl: 'scripts/profile/profile.html'})
         .when('/beers', {secure: true, controller: 'BeerSearchCtrl', templateUrl: 'scripts/beers/beer-search.html'})
-        .when('/beers/:id', {secure: true, controller: 'BeerDetailCtrl', templateUrl: 'scripts/beers/beer-detail.html'})
+        .when('/beers/:query', {secure: true, controller: 'BeerSearchCtrl', templateUrl: '/scripts/beers/beer-search.html'})
+        .when('/beers/detail/:id', {secure: true, controller: 'BeerDetailCtrl', templateUrl: 'scripts/beers/beer-detail.html'})
         .otherwise({redirectTo: '/'});
 }]);
 
@@ -44,13 +45,8 @@ app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope, 
 
     $scope.search = function () {
         console.log('HeaderCtrl: search: ', $scope.query);
-        // Getting the search query data to the search controller
-        $location.url('/beers');
+        $location.url('/beers/' + $scope.query);
         $rootScope.query = $scope.query;
-        // Have to delay sending the query because the other controller has to be loaded.
-        $timeout(function () {
-            $rootScope.$broadcast('search', $scope.query);
-        }, 50);
     };
 
     $scope.logout = function () {
