@@ -32,7 +32,7 @@ app.run(['$rootScope', '$location', '$cookieStore', function ($rootScope, $locat
 
 }]);
 
-app.controller('HeaderCtrl', function ($scope, $location, $rootScope, messageSrc, $cookieStore, $route) {
+app.controller('HeaderCtrl', function ($scope, $location, $rootScope, $cookieStore, $route) {
     console.log('initing HeaderCtrl');
 
     if ($cookieStore.get('login')) {
