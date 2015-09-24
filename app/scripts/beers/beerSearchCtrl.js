@@ -1,63 +1,50 @@
 angular.module('tappr.beersearch', [])
 
-.controller('BeerSearchCtrl', ['$scope', '$location', 'beerSrc', 'messageSrc',
-        function($scope, $location, beerSrc, messageSrc) {
-    $scope.messages = [];
+.controller('BeerSearchCtrl', ['$scope', '$location', 'beerSrc', 'messageSrc', '$routeParams',
+    function($scope, $location, beerSrc, messageSrc, $routeParams) {
 
-    function init () {
-        console.log('INIT');
+        function init () {
+            console.log('INIT');
 
-        $scope.sortValue = 'name';
+            $scope.sortValue = 'name';
 
-        beerSrc.listCategories()
-            .then(
-                function(result){
-                    $scope.categories = result.data;
-                    $scope.filterItems = {};
-                    for(var cat in $scope.categories) {
-                        $scope.filterItems[$scope.categories[cat]] = true;
+            beerSrc.listCategories()
+                .then(
+                    function(result){
+                        $scope.categories = result.data;
+                        $scope.filterItems = {};
+                        for(var cat in $scope.categories) {
+                            $scope.filterItems[$scope.categories[cat]] = true;
+                        }
+                    },
+                    function(error){
+                        console.log('OOPS!', error);
                     }
-                },
-                function(error){
-                    console.log('OOPS!', error);
-                }
-            );
+                );
 
-        // initial search
-        var searchParams;
+            // initial search
 
-        beerSrc.find( searchParams )
-            .then(
-                function(result){
-                    $scope.beers = result.data;
-                },
-                function(error){
-                    console.log('OOPS!', error);
-                }
-            );
+            beerSrc.find($routeParams.query)
+                .then(
+                    function(result){
+                        $scope.beers = result.data;
+                        console.log('beers: ', result.data);
+                    },
+                    function(error){
+                        console.log('OOPS!', error);
+                    }
+                );
 
-    }
+        }
 
-    init();
+        init();
 
-    $scope.$on('handleBroadcast', function() {
-        beerSrc.find( messageSrc.message )
-            .then(
-            function(result){
-                $scope.beers = result.data;
-            },
-            function(error){
-                console.log('OOPS!', error);
-            }
-        );
-    });
+        $scope.load = function (beer) {
+            console.log('Loading beer: ', beer);
+            $location.url('/beers/detail/' + beer.id);
+        };
 
-    $scope.load = function (beer) {
-        console.log('Loading beer: ', beer);
-        $location.url('/beers/' + beer.id);
-    };
-
-    $scope.catFilter = function(beer) {
-        return $scope.filterItems[beer.category];
-    };
-}]);
+        $scope.catFilter = function(beer) {
+            return $scope.filterItems[beer.category];
+        };
+    }]);

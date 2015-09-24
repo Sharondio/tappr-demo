@@ -15,7 +15,8 @@ app.config(['$routeProvider', function($routeProvider) {
         .when('/', {secure: false, controller: 'HomeCtrl', templateUrl: 'scripts/home/home.html'})
         .when('/profile', {secure: true, controller: 'ProfileCtrl', templateUrl: 'scripts/profile/profile.html'})
         .when('/beers', {secure: true, controller: 'BeerSearchCtrl', templateUrl: 'scripts/beers/beer-search.html'})
-        .when('/beers/:id', {secure: true, controller: 'BeerDetailCtrl', templateUrl: 'scripts/beers/beer-detail.html'})
+        .when('/beers/:query', {secure: true, controller: 'BeerSearchCtrl', templateUrl: 'scripts/beers/beer-search.html'})
+        .when('/beers/detail/:id', {secure: true, controller: 'BeerDetailCtrl', templateUrl: 'scripts/beers/beer-detail.html'})
         .otherwise({redirectTo: '/'});
 }]);
 
@@ -31,7 +32,7 @@ app.run(['$rootScope', '$location', '$cookieStore', function ($rootScope, $locat
 
 }]);
 
-app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope, messageSrc, $cookieStore) {
+app.controller('HeaderCtrl', function ($scope, $location, $rootScope, messageSrc, $cookieStore, $route) {
     console.log('initing HeaderCtrl');
 
     if ($cookieStore.get('login')) {
@@ -44,11 +45,10 @@ app.controller('HeaderCtrl', function ($scope, $location, $timeout, $rootScope, 
     };
 
     $scope.search = function () {
-        $location.url('/beers');
-        // Have to delay sending the query because the other controller has to be loaded.
-        $timeout(function () {
-            messageSrc.broadcast($scope.query);
-        }, 50);
+        console.log('SEARCHING: ', $scope.query);
+        $rootScope.query = $scope.query;
+        $location.url('/beers/' + $scope.query);
+        $route.reload()
     };
 
     $scope.logout = function () {
