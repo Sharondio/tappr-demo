@@ -22,8 +22,8 @@ var config = {
         app + '**/*.js'
     ],
     alljs: [
-        app + 'scripts/**/*.js',
-        app + 'app.js'
+        app + 'app.js',
+        app + 'scripts/**/*.js'
     ],
     defaultPort: 8000
 };

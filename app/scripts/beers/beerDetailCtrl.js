@@ -1,9 +1,12 @@
-angular.module('tappr.beerdetail', [])
+angular.module('tappr.beers')
+    .controller('BeerDetailCtrl', BeerDetailCtrl);
 
-.controller('BeerDetailCtrl', ['$scope', '$rootScope', '$routeParams', '$location', '$http', 'userSrc', 'beerSrc',
-        function($scope, $rootScope, $routeParams, $location, $http, userSrc, beerSrc) {
+BeerDetailCtrl.$inject = ['$scope', '$rootScope', '$routeParams', '$location', 'userSrc', 'beerSrc'];
 
-            var user = $rootScope.user.username;
+
+function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, beerSrc) {
+
+    var user = $rootScope.user.username;
 
     function init () {
         console.log('INIT', $routeParams);
@@ -99,4 +102,4 @@ angular.module('tappr.beerdetail', [])
         }
     });
 
-}]);
+}

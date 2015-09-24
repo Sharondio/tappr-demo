@@ -1,4 +1,5 @@
-angular.module('tappr.services').factory('beerSrc', beerSrc);
+angular.module('tappr.common')
+    .factory('beerSrc', beerSrc);
 
 function beerSrc ($http) {
 
