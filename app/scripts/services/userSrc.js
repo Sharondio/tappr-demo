@@ -10,51 +10,20 @@ angular.module('tappr.services').
                 url: url + '/' + username
             }).success(function (results) {
                 return results;
-            }).error(function (error, code) {
-                if (code === 404) {
-                    $http({
-                        method: 'POST',
-                        url: baseUrl,
-                        results: {username: $scope.username}
-                    })
-                    .success(function (results) {
-                        $cookieStore.put('login', results);
-                        return results;
-                    })
-                    .error(function (error, code) {
-                        console.log('ERROR: userSrc: login: ', error);
-                        return false;
-                    });
-                } else {
-                    console.log('ERROR: userSrc: login: ', error);
-                }
+            }).error(function (error) {
+                return error;
             });
         };
 
         service.create = function (username) {
             return $http({
                 method: 'POST',
-                url: url + '/' + username
+                url: url,
+                data: {username: username}
             }).success(function (results) {
                 return results;
-            }).error(function (error, code) {
-                if (code === 404) {
-                    $http({
-                        method: 'POST',
-                        url: baseUrl,
-                        results: {username: $scope.username}
-                    })
-                    .success(function (results) {
-                        $cookieStore.put('login', results);
-                        return results;
-                    })
-                    .error(function (error, code) {
-                        console.log('ERROR: userSrc: login: ', error);
-                        return false;
-                    });
-                } else {
-                    console.log('ERROR: userSrc: login: ', error);
-                }
+            }).error(function (error) {
+                return error;
             });
         };
 

@@ -1,7 +1,7 @@
 angular.module('tappr.home', [])
 
-.controller('HomeCtrl', ['$scope', '$http', '$cookieStore', '$rootScope', 'userSrc',
-        function($scope, $http, $cookieStore, $rootScope, userSrc) {
+.controller('HomeCtrl', ['$scope', '$cookieStore', '$rootScope', 'userSrc',
+        function($scope, $cookieStore, $rootScope, userSrc) {
 
         function init () {
             console.log('INIT');
@@ -23,27 +23,41 @@ angular.module('tappr.home', [])
             userSrc.login( $scope.username )
                 .then(
                     function(result){
+                        console.log( result );
                         $scope.user = result.data;
                         $cookieStore.put('login', result.data);
                         console.log('homeCtrl: login: ', result.data );
                     },
-                    function(error, code){
-                        console.log('OOPS!', code);
-                        if (code == '404') {
-                            $http({
-                                method: 'POST',
-                                url: baseUrl,
-                                data: {username: $scope.username}
-                            })
-                                .success(function (data) {
-                                    $scope.user = data;
-                                    $cookieStore.put('login', data);
-                                    console.log('User added: ', data);
-                                })
-                                .error(function (error, code) {
-                                    console.log('OOPS! ', error, code);
-                                });
+                    function(error){
+
+                        if( error.status === 404){
+                            console.log( 'User not found: creating...');
+
+                            userSrc.create( $scope.username )
+                                .then(
+                                    function(result){
+                                        console.log( 'User created!');
+
+                                        userSrc.login( $scope.username )
+                                            .then(
+                                                function(result){
+                                                    $scope.user = result.data;
+                                                    $cookieStore.put('login', result.data);
+                                                    console.log('homeCtrl: login: ', result.data );
+                                                },
+                                                function(error){
+                                                    console.log('OOPS!', error);
+                                                }
+                                            )
+                                    },
+                                    function(error){
+                                        console.log( 'I tried my best, just can\'t get this person logged in.', error);
+                                    }
+                                )
+
                         }
+
+
                     }
                 );
         };
