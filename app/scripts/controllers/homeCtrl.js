@@ -36,24 +36,17 @@ angular.module('tappr.home', [])
                 .error(function (error, code) {
                     console.log('OOPS!', code);
                     if (code == '404') {
-                        var newUser = {
-                            username: $scope.username,
-                            favorites: [],
-                            ratings: []
-                        };
                         $http({
                             method: 'POST',
                             url: baseUrl,
-                            data: newUser
-                        })
-                            .success(function (data) {
-                                $scope.user = data;
-                                $cookieStore.put('login', data);
-                                console.log('User added: ', data);
-                            })
-                            .error(function (error, code) {
-                                console.log('OOPS! ', error, code);
-                            });
+                            data: {username: $scope.user.username}
+                        }).success(function (results) {
+                            $scope.user = results.data;
+                            $cookieStore.put('login', results.data);
+                            console.log('User added: ', results.data);
+                        }).error(function (error) {
+                            console.log('OOPS! ', error);
+                        });
                     }
                 });
         };
