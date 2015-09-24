@@ -45,17 +45,16 @@ app.controller('HeaderCtrl', function ($scope, $location, $rootScope, messageSrc
     };
 
     $scope.search = function () {
-        console.log('SEARCHING: ', $scope.query);
         $rootScope.query = $scope.query;
         $location.url('/beers/' + $scope.query);
-        $route.reload()
+        $route.reload();
     };
 
     $scope.logout = function () {
         $cookieStore.remove('login');
         $scope.user = {};
         $rootScope.user = {};
-        $location.url('/');
+        $route.reload();
     };
 
 });
