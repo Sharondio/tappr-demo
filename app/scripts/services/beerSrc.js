@@ -34,7 +34,6 @@ function beerSrc ($http) {
                 url: url + '/beer/' + id
             })
             .success(function (result) {
-                console.log('SERVICE: beer.findOne: ', result);
                 return result;
             })
             .error(function (data, status) {

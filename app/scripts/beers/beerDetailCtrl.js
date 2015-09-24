@@ -9,7 +9,6 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
     $scope.ratingValue = undefined;
 
     function init () {
-        console.log('INIT', $routeParams);
         $scope.starsNum = 5;
 
         if ($routeParams.id) {
@@ -38,7 +37,6 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
     }
 
     function ratingErrorHandler (error) {
-        console.log('ratingErrorHanlder: ', error);
         if(error.status === 404) {
             $scope.ratingValue = 0;
             updateStars(true);
@@ -104,7 +102,6 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
         console.log('Toggle Rating: ', index);
         if ($scope.readonly == undefined || $scope.readonly === false){
             $scope.ratingValue = index + 1;
-            //TODO: Save Rating
         }
     };
 
