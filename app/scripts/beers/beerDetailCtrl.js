@@ -3,34 +3,33 @@ angular.module('tappr.beers')
 
 BeerDetailCtrl.$inject = ['$scope', '$rootScope', '$routeParams', '$location', 'userSrc', 'beerSrc'];
 
-
 function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, beerSrc) {
 
     var vm = this;
-    var user = $rootScope.user.username;
+
+    vm.user = $rootScope.user;
 
     function init () {
         console.log('INIT', $routeParams);
-        vm.starsNum = 5;
+        $scope.starsNum = 5;
 
         if ($routeParams.id) {
-            beerSrc.findOne($routeParams.id).then(foundBeerHandler(results), errorHandler(error));
+            beerSrc.findOne($routeParams.id).then(foundBeerHandler(beer), errorHandler(error));
 
             function foundBeerHandler (beer) {
-                console.log('foundBeerHandler')
-                vm.beer = beer;
+                $scope.beer = beer;
                 getRating(beer);
                 getFavorite(beer);
             }
 
             function getRating (beer) {
-                return userSrc.getRating(user, beer).then(ratingHandler(beer), errorHandler(error));
+                return beerSrc.getRating(user, beer).then(ratingHandler(results), errorHandler(error));
             }
 
             function ratingHandler (results) {
-                vm.ratingValue = 0;
+                $scope.ratingValue = 0;
                 if (results) {
-                    vm.ratingValue = results.rating;
+                    $scope.ratingValue = results.rating;
                 }
             }
 
@@ -39,7 +38,7 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
             }
 
             function getFavoriteHandler (results) {
-                vm.isFavorite = results;
+                $scope.isFavorite = results;
             }
 
             function errorHandler (error) {
@@ -54,14 +53,14 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
     init();
 
     function updateStars (init) {
-        vm.stars = [];
-        for (var i = 0; i < vm.starsNum; i++) {
-            vm.stars.push({
-                filled: i < vm.ratingValue
+        $scope.stars = [];
+        for (var i = 0; i < $scope.starsNum; i++) {
+            $scope.stars.push({
+                filled: i < $scope.ratingValue
             });
         }
         if (!init) {
-            userSrc.addRating(user, vm.beer, vm.ratingValue).then(addRatingHandler, errorHandler);
+            userSrc.addRating(user, $scope.beer, $scope.ratingValue).then(addRatingHandler, errorHandler);
         }
     }
 
@@ -69,31 +68,31 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
         // do nothing
     }
 
-    vm.favorite = function () {
+    $scope.favorite = function () {
         userSrc.addFavorite(user, beer).then(addFavoriteHandler(), errorHandler(error));
     };
 
     function addFavoriteHandler () {
-        vm.isFavorite = true;
+        $scope.isFavorite = true;
     }
 
-    vm.unFavorite = function () {
+    $scope.unFavorite = function () {
         UserSrc.unFavorite(user, beer).then(unFavoriteHandler(), errorHandler(error));
     };
 
     function unFavoriteHandler () {
-        vm.isFavorite = false;
+        $scope.isFavorite = false;
     }
-            
-    vm.toggle = function(index) {
+
+    $scope.toggle = function(index) {
         console.log('Toggle Rating: ', index);
-        if (vm.readonly == undefined || vm.readonly === false){
-            vm.ratingValue = index + 1;
+        if ($scope.readonly == undefined || $scope.readonly === false){
+            $scope.ratingValue = index + 1;
             //TODO: Save Rating
         }
     };
 
-    vm.goBack = function () {
+    $scope.goBack = function () {
         console.log('go back')
         $location.url('/beers');
     }
@@ -103,4 +102,5 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
             updateStars();
         }
     });
+
 }
