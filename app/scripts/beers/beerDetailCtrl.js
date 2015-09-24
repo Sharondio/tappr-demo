@@ -13,38 +13,37 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
 
         if ($routeParams.id) {
             beerSrc.findOne($routeParams.id).then(foundBeerHandler, errorHandler);
-
-            function foundBeerHandler (beer) {
-                $scope.beer = beer.data[0];
-                getRating($scope.beer);
-                getFavorite($scope.beer);
-            }
-
-            function getRating (beer) {
-                return userSrc.getRating(user, beer).then(ratingHandler, errorHandler);
-            }
-
-            function ratingHandler (results) {
-                $scope.ratingValue = 0;
-                if (results) {
-                    $scope.ratingValue = results.rating;
-                }
-            }
-
-            function getFavorite (beer) {
-                return userSrc.getFavorite(user, beer).then(getFavoriteHandler, errorHandler);
-            }
-
-            function getFavoriteHandler (results) {
-                $scope.isFavorite = results;
-            }
-
         } else {
             $location.url('/');
         }
     };
 
     init();
+
+    function foundBeerHandler (beer) {
+        $scope.beer = beer.data[0];
+        getRating($scope.beer);
+        getFavorite($scope.beer);
+    }
+
+    function getRating (beer) {
+        return userSrc.getRating(user, beer).then(ratingHandler, errorHandler);
+    }
+
+    function ratingHandler (results) {
+        $scope.ratingValue = 0;
+        if (results) {
+            $scope.ratingValue = results.rating;
+        }
+    }
+
+    function getFavorite (beer) {
+        return userSrc.getFavorite(user, beer).then(getFavoriteHandler, errorHandler);
+    }
+
+    function getFavoriteHandler (results) {
+        $scope.isFavorite = results;
+    }
 
     function errorHandler (error) {
         console.log('OOPS!', error);
