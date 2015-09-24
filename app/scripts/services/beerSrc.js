@@ -13,10 +13,10 @@ function beerSrc ($http) {
             params.q = queryTerm;
         }
         return $http({
-            method: 'GET',
-            url: url + '/beer',
-            params: params
-        })
+                method: 'GET',
+                url: url + '/beer',
+                params: params
+            })
             .success(function (result) {
                 return result;
             })
@@ -30,11 +30,12 @@ function beerSrc ($http) {
     service.findOne = function (id) {
 
         return $http({
-            method: 'GET',
-            url: url + '/beer/' + id
-        })
+                method: 'GET',
+                url: url + '/beer/' + id
+            })
             .success(function (result) {
-                return result;
+                console.log('SERVICE: beer.findOne: ', result);
+                return result[0];
             })
             .error(function (data, status) {
                 console.log('ERROR: beerSrv: findOne: ', error);

@@ -103,8 +103,8 @@ function userSrc ($http) {
         return $http({
             method: 'DELETE',
             url: '//localhost:8001/user/' + user + '/favorite/beer/' + beer.id,
-        }).success(function (results) {
-            return results;
+        }).success(function () {
+            return true;
         }).error(function (error) {
             console.log('ERROR: userSvc: unFavorite', error);
             return false;

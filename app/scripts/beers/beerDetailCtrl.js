@@ -1,10 +1,10 @@
 angular.module('tappr.beers')
     .controller('BeerDetailCtrl', BeerDetailCtrl);
 
-BeerDetailCtrl.$inject = ['$rootScope', '$routeParams', '$location', 'userSrc', 'beerSrc'];
+BeerDetailCtrl.$inject = ['$scope', '$rootScope', '$routeParams', '$location', 'userSrc', 'beerSrc'];
 
 
-function BeerDetailCtrl ($rootScope, $routeParams, $location, userSrc, beerSrc) {
+function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, beerSrc) {
 
     var vm = this;
     var user = $rootScope.user.username;
@@ -14,16 +14,17 @@ function BeerDetailCtrl ($rootScope, $routeParams, $location, userSrc, beerSrc) 
         vm.starsNum = 5;
 
         if ($routeParams.id) {
-            beerSrc.findOne($routeParams.id).then(foundBeerHandler(beer), errorHandler(err));
+            beerSrc.findOne($routeParams.id).then(foundBeerHandler(results), errorHandler(error));
 
             function foundBeerHandler (beer) {
+                console.log('foundBeerHandler')
                 vm.beer = beer;
                 getRating(beer);
                 getFavorite(beer);
             }
 
             function getRating (beer) {
-                return beerSrc.getRating(user, beer).then(ratingHandler(beer), errorHandler(err));
+                return userSrc.getRating(user, beer).then(ratingHandler(beer), errorHandler(error));
             }
 
             function ratingHandler (results) {
@@ -34,7 +35,7 @@ function BeerDetailCtrl ($rootScope, $routeParams, $location, userSrc, beerSrc) 
             }
 
             function getFavorite (beer) {
-                return beerSrc.getFavorite(user, beer).then(getFavoriteHandler(results),errorHandler(err));
+                return beerSrc.getFavorite(user, beer).then(getFavoriteHandler(results),errorHandler(error));
             }
 
             function getFavoriteHandler (results) {
@@ -97,7 +98,7 @@ function BeerDetailCtrl ($rootScope, $routeParams, $location, userSrc, beerSrc) 
         $location.url('/beers');
     }
 
-    vm.$watch('ratingValue', function(newValue) {
+    $scope.$watch('ratingValue', function(newValue) {
         if (newValue) {
             updateStars();
         }

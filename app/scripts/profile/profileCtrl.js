@@ -9,17 +9,17 @@ function ProfileCtrl ($rootScope, $location, userSrc) {
     var vm = this;
     function init () {
         console.log('INIT');
-        var user = $rootScope.user.username;
+        vm.user = $rootScope.user;
 
         //get ratings
-        userSrc.getRatings(user).then(getRatingsHandler, errorHandler);
+        userSrc.getRatings(vm.user.username).then(getRatingsHandler, errorHandler);
 
         function getRatingsHandler(results) {
             vm.user.ratings = results.data;
         }
 
         //get favorites
-        userSrc.getFavorites(user).then(getFavoritesHandler, errorHandler);
+        userSrc.getFavorites(vm.user.username).then(getFavoritesHandler, errorHandler);
 
         function getFavoritesHandler(results) {
             vm.user.favorites = results.data;
@@ -34,7 +34,7 @@ function ProfileCtrl ($rootScope, $location, userSrc) {
     }
 
     vm.unFavorite = function(beer, index) {
-        userSrc.unFavorite(user, beer).then(unFavoriteHandler(results, index), errorHandler);
+        userSrc.unFavorite(vm.user.username, beer).then(unFavoriteHandler(results, index), errorHandler);
     };
 
     function unFavoriteHandler (results, index) {

@@ -60,7 +60,7 @@ function BeerSearchCtrl ($scope, $location, $routeParams, beerSrc, messageSrc) {
 
     vm.load = function (beer) {
         console.log('Loading beer: ', beer);
-        $location.url('/beers/' + beer.id);
+        $location.url('/beers/detail/' + beer.id);
     };
 
     vm.catFilter = function(beer) {
