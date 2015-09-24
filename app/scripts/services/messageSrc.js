@@ -1,4 +1,4 @@
-angular.module('tappr.services').
+angular.module('tappr.common').
     factory('messageSrc', messageSrc);
 
 function messageSrc ($rootScope) {
