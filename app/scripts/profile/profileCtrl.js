@@ -1,9 +1,10 @@
 angular.module('tappr.profile', [])
 
-.controller('ProfileCtrl', ['$scope', '$http', '$location', function($scope, $http, $location) {
+.controller('ProfileCtrl', ['$rootScope', '$scope', '$http', '$location', function($rootScope, $scope, $http, $location) {
 
     function init () {
         console.log('INIT');
+        $scope.user = $rootScope.user;
 
         //get ratings
         $http({

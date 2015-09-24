@@ -3,6 +3,8 @@ angular.module('tappr.beerdetail', [])
 .controller('BeerDetailCtrl', ['$scope', '$rootScope', '$routeParams', '$location', '$http',
         function($scope, $rootScope, $routeParams, $location, $http) {
     $scope.messages = [];
+    $scope.user = $rootScope.user;
+
     var updateStars;
 
     function init () {

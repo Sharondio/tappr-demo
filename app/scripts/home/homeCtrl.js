@@ -29,6 +29,7 @@ angular.module('tappr.home', [])
             })
                 .success(function (data) {
                     $scope.user = data;
+                    $rootScope.user = $scope.user;
                     $cookieStore.put('login', data);
                     console.log('homeCtrl: login: ', data );
                 })
