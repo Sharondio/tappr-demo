@@ -67,7 +67,7 @@ angular.module('tappr.beersearch', [])
 
     $scope.load = function (beer) {
         console.log('Loading beer: ', beer);
-        $location.url('/beers/' + beer.id);
+        $location.url('/beers/detail/' + beer.id);
     };
 
     $scope.catFilter = function(beer) {
