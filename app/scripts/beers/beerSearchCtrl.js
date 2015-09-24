@@ -1,6 +1,5 @@
 angular.module('tappr.beersearch', [])
-
-.controller('BeerSearchCtrl', ['$scope', '$location', 'beerSrc', '$routeParams',
+    .controller('BeerSearchCtrl', ['$scope', '$location', 'beerSrc', '$routeParams',
     function($scope, $location, beerSrc, $routeParams) {
 
         function init () {
