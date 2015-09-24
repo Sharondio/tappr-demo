@@ -1,15 +1,11 @@
 angular.module('tappr.beersearch', [])
 
-.controller('BeerSearchCtrl', ['$scope', '$rootScope', '$http', '$location', 'beerSrc',
-        function($scope, $rootScope, $http, $location, beerSrc) {
+.controller('BeerSearchCtrl', ['$scope', '$location', 'beerSrc', 'messageSrc',
+        function($scope, $location, beerSrc, messageSrc) {
     $scope.messages = [];
 
     function init () {
         console.log('INIT');
-
-        var url = '//localhost:8001/';
-        var getBeerUrl = url + 'beer';
-        var getCategoryUrl = url + 'category';
 
         $scope.sortValue = 'name';
 
@@ -29,15 +25,11 @@ angular.module('tappr.beersearch', [])
 
         // initial search
         var searchParams;
-        if ($rootScope.query) {
-            searchParams = $rootScope.query;
-        }
 
         beerSrc.find( searchParams )
             .then(
                 function(result){
                     $scope.beers = result.data;
-                    console.log('beers found: ', result.data);
                 },
                 function(error){
                     console.log('OOPS!', error);
@@ -48,20 +40,16 @@ angular.module('tappr.beersearch', [])
 
     init();
 
-    $rootScope.$on('search', function (event, data) {
-        console.log('SEARCHING from beerSearchCtrl: ', event, data);
-
-        beerSrc.find( data )
+    $scope.$on('handleBroadcast', function() {
+        beerSrc.find( messageSrc.message )
             .then(
-                function(result){
-                    $scope.beers = data;
-                    console.log('beers found: ', data);
-                },
-                function(error){
-                    console.log('OOPS!', error);
-                }
-            );
-
+            function(result){
+                $scope.beers = result.data;
+            },
+            function(error){
+                console.log('OOPS!', error);
+            }
+        );
     });
 
     $scope.load = function (beer) {

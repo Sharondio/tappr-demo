@@ -1,6 +1,5 @@
-angular.module('tappr.services').factory('beerSrc', beerSrc);
-
-function beerSrc ($http) {
+angular.module('tappr.services', []).
+    factory('beerSrc', function($http) {
 
     var service = {};
     var url = '//localhost:8001';
@@ -58,4 +57,4 @@ function beerSrc ($http) {
     };
 
     return service;
-}
+});
