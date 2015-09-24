@@ -28,7 +28,6 @@ function BeerSearchCtrl ($location, $routeParams, beerSrc, messageSrc) {
         beerSrc.find( $routeParams.query )
             .then(
             function(result){
-                console.log('beers found: ', result.data);
                 vm.beers = result.data;
             },
             function(error){
@@ -41,7 +40,6 @@ function BeerSearchCtrl ($location, $routeParams, beerSrc, messageSrc) {
     init();
 
     vm.load = function (beer) {
-        console.log('Loading beer: ', beer);
         $location.url('/beers/detail/' + beer.id);
     };
 

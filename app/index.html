@@ -38,7 +38,7 @@
                 <li ng-class="{active: header.isActive('/')}"><a href="/#/">Home</a></li>
                 <li ng-class="{active: header.isActive('/profile')}"><a href="/#/profile">Profile</a></li>
                 <li ng-class="{active: header.isActive('/beers')}"><a href="/#/beers">Beer Search</a></li>
-                <li><a ng-click="logout()">Logout</a></li>
+                <li><a href="/#/" ng-click="header.logout()">Logout</a></li>
             </ul>
             <div class="searchinput pull-right">
                 <form ng-submit="header.search()">

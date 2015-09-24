@@ -128,7 +128,7 @@ function userSrc ($http) {
     service.unRate = function (user, beer) {
         return $http({
             method: 'DELETE',
-            url: '//localhost:8001/user/' + user.username + '/rating/beer/' + beer.id
+            url: '//localhost:8001/user/' + user + '/rating/beer/' + beer.id
         }).success(function (results) {
             return results;
         }).error(function (error) {

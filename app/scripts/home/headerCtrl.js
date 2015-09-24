@@ -1,9 +1,9 @@
 angular.module('tappr.home')
     .controller('HeaderCtrl', HeaderCtrl);
 
-HeaderCtrl.$inject = ['$location', '$timeout', '$rootScope', '$cookieStore', 'messageSrc'];
+HeaderCtrl.$inject = ['$location', '$rootScope', '$cookieStore', '$route'];
 
-function HeaderCtrl ($location, $timeout, $rootScope, $cookieStore, messageSrc) {
+function HeaderCtrl ($location, $rootScope, $cookieStore, $route) {
     var vm = this;
 
     if ($cookieStore.get('login')) {
@@ -18,17 +18,15 @@ function HeaderCtrl ($location, $timeout, $rootScope, $cookieStore, messageSrc) 
     vm.search = function () {
         console.log('SEARCHING');
         $location.url('/beers/' + vm.query);
-        // Have to delay sending the query because the other controller has to be loaded.
-        $timeout(function () {
-            messageSrc.broadcast(vm.query);
-        }, 50);
+        $route.reload();
     };
 
     vm.logout = function () {
+        console.log('LOGOUT');
         $cookieStore.remove('login');
         vm.user = {};
         $rootScope.user = {};
-        $location.url('/');
+        $route.reload();
     };
 
 }
