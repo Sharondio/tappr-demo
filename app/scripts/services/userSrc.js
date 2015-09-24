@@ -104,7 +104,7 @@ function userSrc ($http) {
             method: 'DELETE',
             url: '//localhost:8001/user/' + user + '/favorite/beer/' + beer.id,
         }).success(function () {
-            return true;
+            return {status: 'success'};
         }).error(function (error) {
             console.log('ERROR: userSvc: unFavorite', error);
             return false;

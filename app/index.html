@@ -22,7 +22,7 @@
 
 <body>
 
-<nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="HeaderCtrl as header">
+<nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="HeaderCtrl">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -41,9 +41,9 @@
                 <li><a ng-click="logout()">Logout</a></li>
             </ul>
             <div class="searchinput pull-right">
-                <form ng-submit="header.search()">
+                <form ng-submit="search()">
                     <input type="text" ng-model="query">
-                    <button type="button" ng-click="header.search()">Search</button>
+                    <button type="button" ng-click="search()">Search</button>
                 </form>
             </div>
         </div>

@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h2>{{profile.user.username}} Profile</h2>
+                <h2>{{user.username}} Profile</h2>
             </div>
         </div>
         <div class="row">
@@ -17,11 +17,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="fav in profile.user.favorites">
-                        <td ng-click="profile.goto(fav)">{{fav.name}}</td>
+                    <tr ng-repeat="fav in user.favorites">
+                        <td ng-click="goto(fav)">{{fav.name}}</td>
                         <td class="date" ng-click="goto(fav)">{{fav.added | date:'medium':'en_US'}}</td>
                         <td>
-                            <button type="button" class="btn btn-default btn-sm" ng-click="profile.unFavorite(fav, $index)">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="unFavorite(fav, $index)">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             </button>
                         </td>
@@ -44,13 +44,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="rating in profile.user.ratings">
+                    <tr ng-repeat="rating in user.ratings">
                         <td ng-click="goto(rating)">{{rating.name}}</td>
                         <td class="rating" ng-click="goto(rating)">{{rating.rating}}</td>
                         <td class="date" ng-click="goto(rating)">{{rating.updated | date:'medium':'en_US'}}</td>
                         <td class="date" ng-click="goto(rating)">{{rating.added | date:'medium':'en_US'}}</td>
                         <td>
-                            <button type="button" class="btn btn-default btn-sm" ng-click="profile.unRate(rating, $index)">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="unRate(rating, $index)">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             </button>
                         </td>

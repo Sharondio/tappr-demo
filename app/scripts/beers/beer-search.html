@@ -10,7 +10,7 @@
                 <div class="filterBox">
                     <label>Categories:</label>
                     <div class="filters">
-                        <div class="filter_checkboxes" ng-repeat="cat in search.categories">
+                        <div class="filter_checkboxes" ng-repeat="cat in categories">
                             <input type="checkbox" ng-model="filterItems[cat]"> {{cat}}
                         </div>
                     </div>
@@ -20,33 +20,33 @@
                     <tr>
                         <th class="name">
                             Name
-                            <a ng-click="search.sortValue='name'" class="glyphicon glyphicon-menu-down">
-                            <a ng-click="search.sortValue='-name'" class="glyphicon glyphicon-menu-up">
+                            <a ng-click="sortValue='name'" class="glyphicon glyphicon-menu-down">
+                            <a ng-click="sortValue='-name'" class="glyphicon glyphicon-menu-up">
                         </th>
                         <th class="brewery">
                             Brewery
-                            <a ng-click="search.sortValue='brewery'" class="glyphicon glyphicon-menu-down">
-                            <a ng-click="search.sortValue='-brewery'" class="glyphicon glyphicon-menu-up">
+                            <a ng-click="sortValue='brewery'" class="glyphicon glyphicon-menu-down">
+                            <a ng-click="sortValue='-brewery'" class="glyphicon glyphicon-menu-up">
                         </th>
                         <th class="style">
                             Style
-                            <a ng-click="search.sortValue='style'" class="glyphicon glyphicon-menu-down">
-                            <a ng-click="search.sortValue='-style'" class="glyphicon glyphicon-menu-up">
+                            <a ng-click="sortValue='style'" class="glyphicon glyphicon-menu-down">
+                            <a ng-click="sortValue='-style'" class="glyphicon glyphicon-menu-up">
                         </th>
                         <th class="category">
                             Category
-                            <a ng-click="search.sortValue='category'" class="glyphicon glyphicon-menu-down">
-                            <a ng-click="search.sortValue='-category'" class="glyphicon glyphicon-menu-up">
+                            <a ng-click="sortValue='category'" class="glyphicon glyphicon-menu-down">
+                            <a ng-click="sortValue='-category'" class="glyphicon glyphicon-menu-up">
                         </th>
                         <th class="abv">
                             ABV
-                            <a ng-click="search.sortValue='abv'" class="glyphicon glyphicon-menu-down">
-                            <a ng-click="search.sortValue='-abv'" class="glyphicon glyphicon-menu-up">
+                            <a ng-click="sortValue='abv'" class="glyphicon glyphicon-menu-down">
+                            <a ng-click="sortValue='-abv'" class="glyphicon glyphicon-menu-up">
                         </th>
                     </tr>
                     </thead>
-                    <tbody ng-repeat="beer in search.beers | filter: search.catFilter | orderBy: search.sortValue | limitTo: 20">
-                    <tr ng-click="search.load(beer)">
+                    <tbody ng-repeat="beer in beers | filter: catFilter | orderBy: sortValue | limitTo: 20">
+                    <tr ng-click="load(beer)">
                         <td>{{beer.name}}</td>
                         <td>{{beer.brewery}}</td>
                         <td>{{beer.style}}</td>
