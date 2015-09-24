@@ -56,18 +56,15 @@ function userSrc ($http) {
     };
 
     service.getRating = function (user, beer) {
+
         return $http({
             method: 'GET',
             url: url + '/' + user + '/rating/beer/' + beer.id
         }).success(function (results) {
             return results;
         }).error(function (error, code) {
-            if (code === 404) {
-                return false;
-            } else {
-                console.log('ERROR: userSrc: getRating: ', error, code);
-                return false;
-            }
+            console.log('ERROR: userSrc: getRating: ', error, code);
+            return false;
         });
     };
 
