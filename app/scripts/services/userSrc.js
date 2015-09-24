@@ -124,6 +124,17 @@ angular.module('tappr.services').
             });
         };
 
+        service.unRate = function (user, beer) {
+            return $http({
+                method: 'DELETE',
+                url: '//localhost:8001/user/' + user.username + '/rating/beer/' + beer.id
+            }).success(function (results) {
+                return results;
+            }).error(function (error) {
+                console.log('ERROR: userSvc: unRate', error);
+            });
+        };
+
         return service;
     }
 );
