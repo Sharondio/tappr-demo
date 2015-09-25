@@ -9,3 +9,6 @@ This application requires node.js installed to run the build process. It is curr
     > gulp serve
 
 If you want to run the companion application, (tappr-api)[https://github.com/Sharondio/tappr-api], you will also need to install MongoDB. See installation instructions from the tappr-api repo README.md.
+
+## Branches
+Each of the branches is designed to display a transitional state from a very basic application to the next set of changes. The goal was to show a possible path for making changes incrementally to get to the desired state of modern app.
