@@ -1,8 +1,7 @@
 angular.module('tappr.services', []).
-factory('beerSrc', function($http) {
+factory('beerSrc', function($http, configSrc) {
 
     var service = {};
-    var url = '//localhost:8001';
 
     service.find = function (queryTerm) {
 
@@ -12,7 +11,7 @@ factory('beerSrc', function($http) {
         }
         return $http({
             method: 'GET',
-            url: url + '/beer',
+            url: configSrc.getURL() +  '/beer',
             params: params
         })
             .success(function (result) {
@@ -29,7 +28,7 @@ factory('beerSrc', function($http) {
 
         return $http({
             method: 'GET',
-            url: url + '/beer/' + id
+            url: configSrc.getURL() + '/beer/' + id
         })
             .success(function (result) {
                 return result;
@@ -45,7 +44,7 @@ factory('beerSrc', function($http) {
 
         return $http({
             method: 'GET',
-            url: url + '/category'
+            url: configSrc.getURL() + '/category'
         })
             .success(function (result) {
                 return result;

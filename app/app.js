@@ -10,7 +10,9 @@ var app = angular.module('tappr', [
     'tappr.services'
 ]);
 
-app.config(['$routeProvider', function($routeProvider) {
+app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
+    $httpProvider.defaults.useXDomain = true;
+
     $routeProvider
         .when('/', {secure: false, controller: 'HomeCtrl', templateUrl: 'scripts/home/home.html'})
         .when('/profile', {secure: true, controller: 'ProfileCtrl', templateUrl: 'scripts/profile/profile.html'})
@@ -20,7 +22,9 @@ app.config(['$routeProvider', function($routeProvider) {
         .otherwise({redirectTo: '/'});
 }]);
 
-app.run(['$rootScope', '$location', '$cookieStore', function ($rootScope, $location, $cookieStore) {
+app.run(['$rootScope', '$location', '$cookieStore', 'configSrc', function ($rootScope, $location, $cookieStore, configSrc) {
+
+    configSrc.checkOverride();
 
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
 

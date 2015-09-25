@@ -1,57 +1,34 @@
-angular.module('tappr.services', []).
-factory('beerSrc', function($http) {
+angular.module('tappr.services').
+factory('configSrc', function($http) {
 
-    var service = {};
-    var url = '//localhost:8001';
+    var service = {},
+        url = '//localhost:8001',
+        overrideChecked;
 
-    service.find = function (queryTerm) {
+    service.getURL = function () {
 
-        var params = {};
-        if(queryTerm){
-            params.q = queryTerm;
-        }
-        return $http({
-            method: 'GET',
-            url: url + '/beer',
-            params: params
-        })
-            .success(function (result) {
-                return result;
-            })
-            .error(function (data, status) {
-                console.log('ERROR: beerSrv: find: ', error);
-                return status;
-            });
+        return url;
 
     };
 
-    service.findOne = function (id) {
-
-        return $http({
+    service.checkOverride = function(){
+        $http({
             method: 'GET',
-            url: url + '/beer/' + id
+            url: '/config.json'
         })
             .success(function (result) {
-                return result;
+                url = '//' + result.server + ':8001';
+                overrideChecked = true;
+                console.log('OVERRIDE FOUND: configSrc: checkOverride: ', url);
             })
-            .error(function (data, status) {
-                console.log('ERROR: beerSrv: findOne: ', error);
-                return status;
-            });
+            .error(function (error, status) {
 
-    };
+                if( status === 404 ){
+                    overrideChecked = true;
+                } else {
+                    console.log('ERROR: configSrc: getURL: ', error, status);
+                }
 
-    service.listCategories = function () {
-
-        return $http({
-            method: 'GET',
-            url: url + '/category'
-        })
-            .success(function (result) {
-                return result;
-            })
-            .error(function (data, status) {
-                return status;
             });
 
     };
