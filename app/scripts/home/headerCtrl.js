@@ -5,6 +5,7 @@ angular.module('tappr.home', [])
             console.log('initing HeaderCtrl');
 
             if ($cookieStore.get('login')) {
+                console.log('there is a cookie', $cookieStore.get('login'));
                 var user = $cookieStore.get('login');
                 userSrc.refreshUser(user.username)
                     .then(function () {
@@ -24,9 +25,7 @@ angular.module('tappr.home', [])
             };
 
             $scope.logout = function () {
-                $cookieStore.remove('login');
-                $scope.user = {};
-                $rootScope.user = {};
+                userSrc.logout();
                 $route.reload();
             };
 

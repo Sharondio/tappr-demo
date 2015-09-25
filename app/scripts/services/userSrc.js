@@ -1,5 +1,5 @@
 angular.module('tappr.services').
-    factory('userSrc', function($http) {
+    factory('userSrc', ['$http', '$cookieStore', function($http, $cookieStore) {
 
         var service = {};
         var url = '//localhost:8001/user';
@@ -12,10 +12,17 @@ angular.module('tappr.services').
                 url: url + '/' + username
             }).success(function (results) {
                 service.user = results;
+                $cookieStore.put('login', service.user.username);
                 return results;
             }).error(function (error) {
                 return error;
             });
+        };
+
+        service.logout = function () {
+            service.user = {};
+            $cookieStore.remove('login');
+            return true;
         };
 
         service.create = function (username) {
@@ -25,6 +32,7 @@ angular.module('tappr.services').
                 data: {username: username}
             }).success(function (results) {
                 service.refreshUser(username);
+                $cookieStore.put('login', service.user.username);
                 return results;
             }).error(function (error) {
                 return error;
@@ -131,8 +139,7 @@ angular.module('tappr.services').
                 console.log('ERROR: userSvc: refreshUser: ', error);
                 return error;
             });
-        }
+        };
 
         return service;
-    }
-);
+    }]);
