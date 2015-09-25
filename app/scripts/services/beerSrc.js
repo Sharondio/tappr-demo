@@ -1,6 +1,8 @@
 angular.module('tappr.common')
     .factory('beerSrc', beerSrc);
 
+beerSrc.$inject = ['$http'];
+
 function beerSrc ($http) {
 
     var service = {};

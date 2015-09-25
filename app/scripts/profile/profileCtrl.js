@@ -9,24 +9,10 @@ function ProfileCtrl ($scope, $rootScope, $location, userSrc) {
     function init () {
         console.log('INIT');
         $scope.user = $rootScope.user;
-
-        //get ratings
-        userSrc.getRatings($scope.user.username).then(getRatingsHandler, errorHandler);
-
-        //get favorites
-        userSrc.getFavorites($scope.user.username).then(getFavoritesHandler, errorHandler);
     }
 
     init();
-
-    function getRatingsHandler(results) {
-        $scope.user.ratings = results.data;
-    }
-
-    function getFavoritesHandler(results) {
-        $scope.user.favorites = results.data;
-    }
-
+    
     function errorHandler (error) {
         console.log('OOPS!', error);
     }

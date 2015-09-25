@@ -27,7 +27,8 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
     }
 
     function getRating (beer) {
-        return userSrc.getRating(user, beer).then(ratingHandler, ratingErrorHandler);
+        console.log('getRating: ', beer);
+        return userSrc.getRating(beer).then(ratingHandler, ratingErrorHandler);
     }
 
     function ratingHandler (results) {
@@ -46,7 +47,7 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
     }
 
     function getFavorite (beer) {
-        return userSrc.getFavorite(user, beer).then(getFavoriteHandler, getFavoriteErrorHandler);
+        return userSrc.getFavorite(beer).then(getFavoriteHandler, getFavoriteErrorHandler);
     }
 
     function getFavoriteHandler (results) {
@@ -74,7 +75,7 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
             });
         }
         if (!init) {
-            userSrc.addRating(user, $scope.beer, $scope.ratingValue).then(addRatingHandler, errorHandler);
+            userSrc.addRating($scope.beer, $scope.ratingValue).then(addRatingHandler, errorHandler);
         }
     }
 
@@ -83,7 +84,7 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
     }
 
     $scope.favorite = function () {
-        userSrc.addFavorite(user, $scope.beer).then(addFavoriteHandler, errorHandler);
+        userSrc.addFavorite($scope.beer).then(addFavoriteHandler, errorHandler);
     };
 
     function addFavoriteHandler () {
@@ -91,7 +92,7 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
     }
 
     $scope.unFavorite = function () {
-        userSrc.unFavorite(user, $scope.beer).then(unFavoriteHandler, errorHandler);
+        userSrc.unFavorite($scope.beer).then(unFavoriteHandler, errorHandler);
     };
 
     function unFavoriteHandler () {
