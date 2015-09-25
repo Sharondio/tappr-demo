@@ -3,6 +3,8 @@ angular.module('tappr.beerdetail', [])
 .controller('BeerDetailCtrl', ['$scope', '$rootScope', '$routeParams', '$location', '$http', 'userSrc', 'beerSrc',
         function($scope, $rootScope, $routeParams, $location, $http, userSrc, beerSrc) {
 
+            console.log('$rootScope: ', $rootScope);
+
             var user = $rootScope.user.username;
             $scope.ratingValue = undefined;
 
@@ -89,7 +91,7 @@ angular.module('tappr.beerdetail', [])
             }
 
             $scope.unFavorite = function () {
-                UserSrc.unFavorite(user, $scope.beer).then(unFavoriteHandler, errorHandler);
+                userSrc.unFavorite(user, $scope.beer).then(unFavoriteHandler, errorHandler);
             };
 
             function unFavoriteHandler () {
