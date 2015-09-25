@@ -7,3 +7,4 @@ tmp
 .idea
 all.js
 bower.js
+app/config.json
