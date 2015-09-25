@@ -7,31 +7,34 @@ angular.module('tappr.profile', []);
 angular.module('tappr.common', []);
 
 angular.module('tappr', [
-    'ngRoute',
+    'ui.router',
     'ngCookies',
     'tappr.home',
     'tappr.beers',
     'tappr.profile',
     'tappr.common'
 ])
-
+/*
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider
-            .when('/', {secure: false, controller: 'HomeCtrl', templateUrl: 'scripts/home/home.html'})
             .when('/profile', {secure: true, controller: 'ProfileCtrl', templateUrl: 'scripts/profile/profile.html'})
             .when('/beers', {secure: true, controller: 'BeerSearchCtrl', templateUrl: 'scripts/beers/beer-search.html'})
             .when('/beers/:query', {secure: true, controller: 'BeerSearchCtrl', templateUrl: 'scripts/beers/beer-search.html'})
             .when('/beers/detail/:id', {secure: true, controller: 'BeerDetailCtrl', templateUrl: 'scripts/beers/beer-detail.html'})
             .otherwise({redirectTo: '/'});
     }])
-    .run(['$rootScope', '$location', '$cookieStore', function ($rootScope, $location, $cookieStore) {
+*/
+    .run(['$rootScope', '$state', '$cookieStore', function ($rootScope, $state, $cookieStore) {
 
-        $rootScope.$on('$routeChangeStart', function (event, next, current) {
 
-            if (next.$$route.secure && next.$$route.secure === true && !$cookieStore.get('login')) {
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+
+            //Check to see if the person is logged in
+            if (toState.secure && !$cookieStore.get('login') ) {
                 event.preventDefault();
-                $location.url('/');
+                $state.got( 'root.home' );
             }
+
         });
 
     }]);
