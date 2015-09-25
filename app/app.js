@@ -14,18 +14,14 @@ angular.module('tappr', [
     'tappr.profile',
     'tappr.common'
 ])
-/*
-    .config(['$routeProvider', function($routeProvider) {
-        $routeProvider
-            .when('/profile', {secure: true, controller: 'ProfileCtrl', templateUrl: 'scripts/profile/profile.html'})
-            .when('/beers', {secure: true, controller: 'BeerSearchCtrl', templateUrl: 'scripts/beers/beer-search.html'})
-            .when('/beers/:query', {secure: true, controller: 'BeerSearchCtrl', templateUrl: 'scripts/beers/beer-search.html'})
-            .when('/beers/detail/:id', {secure: true, controller: 'BeerDetailCtrl', templateUrl: 'scripts/beers/beer-detail.html'})
-            .otherwise({redirectTo: '/'});
-    }])
-*/
-    .run(['$rootScope', '$state', '$cookieStore', function ($rootScope, $state, $cookieStore) {
 
+    .config(function ($urlRouterProvider) {
+
+        $urlRouterProvider.otherwise('/');
+
+    })
+
+    .run(['$rootScope', '$state', '$cookieStore', function ($rootScope, $state, $cookieStore) {
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
