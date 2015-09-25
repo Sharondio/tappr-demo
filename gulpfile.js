@@ -1,7 +1,5 @@
 // TODO: figure out the order of the CSS concat/compile/minify process with vendor libs.
 var gulp = require('gulp');
-var args = require('yargs').argv;
-var path = require('path');
 var del = require('del');
 var $ = require('gulp-load-plugins')({lazy: true});
 

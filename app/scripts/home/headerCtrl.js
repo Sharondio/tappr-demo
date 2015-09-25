@@ -1,4 +1,4 @@
-angular.module('tappr.home')
+angular.module('tappr.home', [])
     .controller('HeaderCtrl', function ($scope, $location, $rootScope, $cookieStore, $route) {
         console.log('initing HeaderCtrl');
 

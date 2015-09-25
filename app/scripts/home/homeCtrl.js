@@ -1,4 +1,4 @@
-angular.module('tappr.home', [])
+angular.module('tappr.home')
 
 .controller('HomeCtrl', ['$scope', '$cookieStore', '$rootScope', 'userSrc',
     function($scope, $cookieStore, $rootScope, userSrc) {
