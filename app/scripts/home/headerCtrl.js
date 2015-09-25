@@ -1,12 +1,16 @@
 angular.module('tappr.home', [])
 
-    .controller('HeaderCtrl', ['$scope', '$location', '$rootScope', '$cookieStore', '$route',
-        function($scope, $location, $rootScope, $cookieStore, $route) {
+    .controller('HeaderCtrl', ['$scope', '$location', '$rootScope', '$cookieStore', '$route', 'userSrc',
+        function($scope, $location, $rootScope, $cookieStore, $route, userSrc) {
             console.log('initing HeaderCtrl');
 
             if ($cookieStore.get('login')) {
-                $scope.user = $cookieStore.get('login');
-                $rootScope.user = $cookieStore.get('login');
+                var user = $cookieStore.get('login');
+                userSrc.refreshUser(user.username)
+                    .then(function () {
+                        $scope.user = userSrc.user;
+                    });
+                $scope.user = userSrc.user;
             }
 
             $scope.isActive = function (view) {

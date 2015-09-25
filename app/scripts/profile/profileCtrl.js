@@ -1,35 +1,16 @@
 angular.module('tappr.profile', [])
-    .controller('ProfileCtrl', ['$scope', '$rootScope', '$http', '$location', 'userSrc',
-    function($scope, $rootScope, $http, $location, userSrc) {
+    .controller('ProfileCtrl', ['$scope', '$http', '$location', 'userSrc',
+    function($scope, $http, $location, userSrc) {
 
-        var user = $rootScope.user.username;
-
-        function init () {
-            console.log('INIT');
-
-            //get ratings
-            userSrc.getRatings(user).then(getRatingsHandler, errorHandler);
-
-            //get favorites
-            userSrc.getFavorites(user).then(getFavoritesHandler, errorHandler);
-        }
-
-        init();
-
-        function getRatingsHandler(results) {
-            $scope.user.ratings = results.data;
-        }
-
-        function getFavoritesHandler(results) {
-            $scope.user.favorites = results.data;
-        }
+        $scope.user = userSrc.user;
+        console.log('profileCtrl: $scope.user: ', $scope.user);
 
         function errorHandler (error) {
             console.log('OOPS!', error);
         }
 
         $scope.unFavorite = function(beer, index) {
-            userSrc.unFavorite(user, beer).then(unFavoriteHandler(index), errorHandler);
+            userSrc.unFavorite(beer).then(unFavoriteHandler(index), errorHandler);
         };
 
         function unFavoriteHandler (index) {
@@ -37,7 +18,7 @@ angular.module('tappr.profile', [])
         }
 
         $scope.unRate = function(beer, index) {
-            userSrc.unRate(user, beer).then(unRateHandler(index), errorHandler);
+            userSrc.unRate(beer).then(unRateHandler(index), errorHandler);
         };
 
         function unRateHandler (index) {

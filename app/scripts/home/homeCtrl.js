@@ -3,17 +3,10 @@ angular.module('tappr.home')
         function($scope, $cookieStore, $rootScope, userSrc) {
 
             function init () {
-            console.log('INIT');
-            $scope.messages = [];
-            $scope.user = {};
-            $scope.messages.push('HomeCtrl is initted');
+                console.log('INIT');
+                $scope.user = userSrc.user;
 
-            if ($cookieStore.get('login')) {
-                $scope.user = $cookieStore.get('login');
-                $rootScope.user = $cookieStore.get('login');
-                console.log('already logged in!', $cookieStore.get('login'), $scope.user);
             }
-        }
             init ();
 
             $scope.login = function() {
@@ -22,7 +15,7 @@ angular.module('tappr.home')
                     .then(
                     function(result) {
                         console.log(result);
-                        $scope.user = result.data;
+                        $scope.user = userSrc.user;
                         $cookieStore.put('login', result.data);
                         console.log('homeCtrl: login: ', result.data);
                     },
@@ -39,7 +32,7 @@ angular.module('tappr.home')
                                         userSrc.login($scope.username)
                                             .then(
                                                 function(result) {
-                                                    $scope.user = result.data;
+                                                    $scope.user = userSrc.user;
                                                     $cookieStore.put('login', result.data);
 
                                                     console.log('homeCtrl: login: ', result.data);
