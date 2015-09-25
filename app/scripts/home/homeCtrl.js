@@ -1,34 +1,31 @@
 angular.module('tappr.home')
     .controller('HomeCtrl', HomeCtrl);
 
-HomeCtrl.$inject = ['$cookieStore', '$rootScope', 'userSrc'];
+HomeCtrl.$inject = ['$scope', '$cookieStore', '$rootScope', 'userSrc'];
 
-function HomeCtrl ($cookieStore, $rootScope, userSrc) {
-
-    var vm = this;
+function HomeCtrl ($scope, $cookieStore, $rootScope, userSrc) {
 
     function init () {
         console.log('INIT');
-        vm.messages = [];
-        vm.user = {};
-        vm.messages.push('HomeCtrl is initted');
+        $scope.user = {};
 
         if ($cookieStore.get('login')) {
-            vm.user = $cookieStore.get('login');
+            $scope.user = $cookieStore.get('login');
             $rootScope.user = $cookieStore.get('login');
-            console.log('already logged in!', $cookieStore.get('login'), vm.user);
+            console.log('already logged in!', $cookieStore.get('login'), $scope.user);
         }
     }
     init ();
 
-    vm.login = function() {
+    $scope.login = function() {
 
-        userSrc.login(vm.username)
+        userSrc.login($scope.username)
             .then(
             function(result) {
                 console.log(result);
-                vm.user = result.data;
+                $scope.user = result.data;
                 $cookieStore.put('login', result.data);
+                $rootScope.user = $scope.user;
                 console.log('homeCtrl: login: ', result.data);
             },
             function(error) {
@@ -36,17 +33,17 @@ function HomeCtrl ($cookieStore, $rootScope, userSrc) {
                 if (error.status === 404) {
                     console.log('User not found: creating...');
 
-                    userSrc.create(vm.username)
+                    userSrc.create($scope.username)
                         .then(
                         function(result) {
                             console.log('User created!');
 
-                            userSrc.login(vm.username)
+                            userSrc.login($scope.username)
                                 .then(
                                 function(result) {
-                                    vm.user = result.data;
+                                    $scope.user = result.data;
                                     $cookieStore.put('login', result.data);
-
+                                    $rootScope.user = $scope.user;
                                     console.log('homeCtrl: login: ', result.data);
                                 },
                                 function(error) {

@@ -91,7 +91,7 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
     }
 
     $scope.unFavorite = function () {
-        UserSrc.unFavorite(user, $scope.beer).then(unFavoriteHandler, errorHandler);
+        userSrc.unFavorite(user, $scope.beer).then(unFavoriteHandler, errorHandler);
     };
 
     function unFavoriteHandler () {
