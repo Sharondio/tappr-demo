@@ -31,7 +31,6 @@ angular.module('tappr.services').
                 url: url,
                 data: {username: username}
             }).success(function (results) {
-                service.refreshUser(username);
                 $cookieStore.put('login', service.user.username);
                 return results;
             }).error(function (error) {

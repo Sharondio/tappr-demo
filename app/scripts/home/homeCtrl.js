@@ -10,11 +10,10 @@ angular.module('tappr.home')
 
             function successLoginHandler () {
                 console.log('SUCCESS LOGIN: ', $scope.user);
-                //$scope.user = userSrc.user;
+                $scope.user = userSrc.user;
             }
 
-            function errorLoginHandler (error) {
-                console.log('errorloginhandler')
+            function errorLoginHandler () {
                 createLogin($scope.username);
             }
 
@@ -23,13 +22,11 @@ angular.module('tappr.home')
             }
 
             function createLogin() {
-                console.log('creating login');
                 userSrc.create($scope.username).then(successCreateHandler, errorHandler);
             }
 
             function successCreateHandler () {
-                console.log('SUCCESS CREATE: ', $scope.user);
-                //$scope.user = userSrc.user;
+                userSrc.refreshUser($scope.username).then(successLoginHandler, errorHandler);
             }
 
         }]);
