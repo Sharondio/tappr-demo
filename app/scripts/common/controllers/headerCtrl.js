@@ -15,7 +15,7 @@ angular.module('tappr.common')
 
             $scope.search = function () {
                 console.log('SEARCHING');
-                $location.url('/beers/' + $scope.query);
+                $state.go('root.beers.search', {query: $scope.query});
                 // Have to delay sending the query because the other controller has to be loaded.
                 $timeout(function () {
                     messageSrc.broadcast($scope.query);

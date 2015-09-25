@@ -1,9 +1,9 @@
 angular.module('tappr.beers')
     .controller('BeerSearchCtrl', BeerSearchCtrl);
 
-BeerSearchCtrl.$inject = ['$scope', '$location', '$routeParams', 'beerSrc', 'messageSrc'];
+BeerSearchCtrl.$inject = ['$scope', '$state', '$stateParams', 'beerSrc', 'messageSrc'];
 
-function BeerSearchCtrl ($scope, $location, $routeParams, beerSrc, messageSrc) {
+function BeerSearchCtrl ($scope, $state, $stateParams, beerSrc, messageSrc) {
 
     function init () {
         console.log('INIT');
@@ -24,7 +24,7 @@ function BeerSearchCtrl ($scope, $location, $routeParams, beerSrc, messageSrc) {
             }
         );
 
-        beerSrc.find( $routeParams.query )
+        beerSrc.find( $stateParams.query )
             .then(
             function(result){
                 console.log('beers found: ', result.data);
@@ -53,7 +53,7 @@ function BeerSearchCtrl ($scope, $location, $routeParams, beerSrc, messageSrc) {
 
     $scope.load = function (beer) {
         console.log('Loading beer: ', beer);
-        $location.url('/beers/detail/' + beer.id);
+        $state.go('root.beers.detail', {id: beer.id});
     };
 
     $scope.catFilter = function(beer) {
