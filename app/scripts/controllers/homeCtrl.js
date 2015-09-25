@@ -3,7 +3,7 @@ angular.module('tappr.home', [])
 .controller('HomeCtrl', ['$scope', '$http', '$cookieStore', '$rootScope',
         function($scope, $http, $cookieStore, $rootScope) {
 
-        var baseUrl = '//localhost:8001/user/',
+        var baseUrl = '//localhost:8001/user',
             queryUrl;
 
         function init () {
@@ -22,7 +22,7 @@ angular.module('tappr.home', [])
         init ();
 
         $scope.login = function() {
-            queryUrl = baseUrl + $scope.username;
+            queryUrl = baseUrl + '/' + $scope.username;
             $http({
                 method: 'GET',
                 url: queryUrl
@@ -34,18 +34,22 @@ angular.module('tappr.home', [])
                     console.log('homeCtrl: login: ', data );
                 })
                 .error(function (error, code) {
-                    console.log('OOPS!', code);
-                    if (code == '404') {
+                    console.log('OOPS! User does not exist, create it', error, code);
+                    if (code === 404) {
                         $http({
                             method: 'POST',
                             url: baseUrl,
-                            data: {username: $scope.user.username}
+                            data: {username: $scope.username}
                         }).success(function (results) {
-                            $scope.user = results.data;
-                            $cookieStore.put('login', results.data);
-                            console.log('User added: ', results.data);
+                            $scope.user = {
+                                username: $scope.username,
+                                ratings: [],
+                                favorites: []
+                            };
+                            $rootScope.user = $scope.user;
+                            $cookieStore.put('login', $scope.user);
                         }).error(function (error) {
-                            console.log('OOPS! ', error);
+                            console.log('OOPS! Cannot add user ', error);
                         });
                     }
                 });
