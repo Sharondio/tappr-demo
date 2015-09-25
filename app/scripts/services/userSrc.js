@@ -12,7 +12,7 @@ angular.module('tappr.services').
                 url: url + '/' + username
             }).success(function (results) {
                 service.user = results;
-                $cookieStore.put('login', service.user.username);
+                $cookieStore.put('login', username);
                 return results;
             }).error(function (error) {
                 return error;
@@ -31,7 +31,7 @@ angular.module('tappr.services').
                 url: url,
                 data: {username: username}
             }).success(function (results) {
-                $cookieStore.put('login', service.user.username);
+                $cookieStore.put('login', username);
                 return results;
             }).error(function (error) {
                 return error;

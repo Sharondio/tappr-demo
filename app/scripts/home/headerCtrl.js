@@ -11,7 +11,6 @@ angular.module('tappr.home', [])
                     .then(function () {
                         $scope.user = userSrc.user;
                     });
-                $scope.user = userSrc.user;
             }
 
             $scope.isActive = function (view) {

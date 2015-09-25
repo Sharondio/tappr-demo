@@ -23,6 +23,7 @@ app.config(['$routeProvider', function($routeProvider) {
 app.run(['$rootScope', '$location', '$cookieStore', function ($rootScope, $location, $cookieStore) {
 
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
+        console.log('changing route: ', $cookieStore.get('login'))
 
         if (next.$$route.secure && next.$$route.secure === true && !$cookieStore.get('login')) {
             event.preventDefault();

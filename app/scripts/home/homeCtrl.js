@@ -2,7 +2,7 @@ angular.module('tappr.home')
     .controller('HomeCtrl', ['$scope', '$cookieStore', '$rootScope', 'userSrc',
         function($scope, $cookieStore, $rootScope, userSrc) {
 
-            $scope.user = {};
+            $scope.user = userSrc.user;
 
             $scope.login = function() {
                 userSrc.login($scope.username).then(successLoginHandler, errorLoginHandler);
