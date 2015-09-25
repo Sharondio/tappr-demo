@@ -12,7 +12,6 @@ angular.module('tappr')
                 views: {
                     '@': {templateUrl: 'scripts/common/layouts/default.html'},
                     'header@root': {templateUrl: 'scripts/common/partials/header.html', controller: 'HeaderCtrl'}
-
                 }
             })
 

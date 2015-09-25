@@ -1,9 +1,9 @@
 angular.module('tappr.beers')
     .controller('BeerDetailCtrl', BeerDetailCtrl);
 
-BeerDetailCtrl.$inject = ['$scope', '$rootScope', '$routeParams', '$location', 'userSrc', 'beerSrc'];
+BeerDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', '$location', 'userSrc', 'beerSrc'];
 
-function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, beerSrc) {
+function BeerDetailCtrl ($scope, $rootScope, $stateParams, $location, userSrc, beerSrc) {
 
     var user = $rootScope.user.username;
     $scope.ratingValue = undefined;
@@ -11,8 +11,8 @@ function BeerDetailCtrl ($scope, $rootScope, $routeParams, $location, userSrc, b
     function init () {
         $scope.starsNum = 5;
 
-        if ($routeParams.id) {
-            beerSrc.findOne($routeParams.id).then(foundBeerHandler, errorHandler);
+        if ($stateParams.id) {
+            beerSrc.findOne($stateParams.id).then(foundBeerHandler, errorHandler);
         } else {
             $location.url('/');
         }

@@ -11,7 +11,7 @@ angular.module('tappr')
 
                 views: {
                     '@': {templateUrl: 'scripts/common/layouts/default.html'},
-                    'header@root': {templateUrl: 'scripts/common/partials/header.html', controller: 'HeaderCtrl'}
+                    'header@root.beers': {templateUrl: 'scripts/common/partials/header.html', controller: 'HeaderCtrl'}
                 }
             })
 
@@ -19,11 +19,15 @@ angular.module('tappr')
                 url: '/beers',
                 secure: true,
                 views: {
-                    'content@root': {
-                        templateUrl: 'scripts/beers/views/beer-search.html',
-                        controller: 'BeerSearchCtrl',
-                        controllerAs: 'search'
-                    }
+                    'content@root.beers': {templateUrl: 'scripts/beers/views/beer-search.html', controller: 'BeerSearchCtrl'}
+                }
+            })
+
+            .state('root.beers.detail', {
+                url: '/beers/detail/{id}',
+                secure: true,
+                views: {
+                    'content@root.beers': {templateUrl: 'scripts/beers/views/beer-detail.html', controller: 'BeerDetailCtrl'}
                 }
             })
 

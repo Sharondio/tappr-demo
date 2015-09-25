@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col-md-12">
+        <label>Favorites:</label>
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th class="date">Date Added</th>
+                <th>Remove</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="fav in user.favorites">
+                <td ng-click="goto(fav)">{{fav.name}}</td>
+                <td class="date" ng-click="goto(fav)">{{fav.added | date:'medium':'en_US'}}</td>
+                <td>
+                    <button type="button" class="btn btn-default btn-sm" ng-click="unFavorite(fav, $index)">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -32,7 +32,7 @@ angular.module('tappr', [
             //Check to see if the person is logged in
             if (toState.secure && !$cookieStore.get('login') ) {
                 event.preventDefault();
-                $state.got( 'root.home' );
+                $state.go( 'root.home' );
             }
 
         });
