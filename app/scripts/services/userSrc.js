@@ -1,22 +1,33 @@
 angular.module('tappr.common').
     factory('userSrc', userSrc);
 
-userSrc.$inject = ['$http'];
+userSrc.$inject = ['$http','$cookieStore'];
 
-function userSrc ($http) {
+function userSrc ($http, $cookieStore) {
 
     var service = {};
     var url = '//localhost:8001/user';
+
+    service.user = {};
 
     service.login = function (username) {
         return $http({
             method: 'GET',
             url: url + '/' + username
         }).success(function (results) {
+            service.user = results;
+            console.log('SERVICE: putting cookie: ', username);
+            $cookieStore.put('login', username);
             return results;
         }).error(function (error) {
             return error;
         });
+    };
+
+    service.logout = function () {
+        service.user = {};
+        $cookieStore.remove('login');
+        return true;
     };
 
     service.create = function (username) {
@@ -25,70 +36,57 @@ function userSrc ($http) {
             url: url,
             data: {username: username}
         }).success(function (results) {
+            $cookieStore.put('login', username);
+            service.user = {
+                username: username,
+                favorites: [],
+                ratings: []
+            };
             return results;
         }).error(function (error) {
             return error;
         });
     };
 
-    service.getRatings = function (user) {
+    service.getRating = function (beer) {
+        console.log('SERVICE: getRating: ', beer, service.user.username);
         return $http({
             method: 'GET',
-            url: url + '/' + user + '/rating/beer'
-        }).success(function (results) {
-            return results;
-        }).error(function (error) {
-            console.log('ERROR: userSrc: getRatings: ', error);
-            return false;
-        });
-    };
-
-    service.getFavorites = function (user) {
-        return $http({
-            method: 'GET',
-            url: url + '/' + user + '/favorite/beer'
-        }).success(function (results) {
-            return results;
-        }).error(function (error) {
-            console.log('ERROR: userSrc: getRatings: ', error);
-            return false;
-        });
-    };
-
-    service.getRating = function (user, beer) {
-
-        return $http({
-            method: 'GET',
-            url: url + '/' + user + '/rating/beer/' + beer.id
+            url: url + '/' + service.user.username + '/rating/beer/' + beer.id
         }).success(function (results) {
             return results;
         }).error(function (error, code) {
-            console.log('ERROR: userSrc: getRating: ', error, code);
-            return false;
+            if (code === 404) {
+                return false;
+            } else {
+                console.log('ERROR: userSrc: getRating: ', error, code);
+                return false;
+            }
         });
     };
 
-    service.getFavorite = function (user, beer) {
+    service.getFavorite = function (beer) {
         return $http({
             method: 'GET',
-            url: url + '/' + user + '/favorite/beer/' + beer.id
+            url: url + '/' + service.user.username + '/favorite/beer/' + beer.id
         }).success(function (results) {
-            return true;
+            return results;
         }).error (function (error, code) {
             console.log('ERROR: userSrc: getFavoriteStatus: ', error, code);
             return false;
         });
     };
 
-    service.addFavorite = function (user, beer) {
+    service.addFavorite = function (beer) {
         return $http({
             method: 'POST',
-            url: '//localhost:8001/user/' + user + '/favorite/beer',
+            url: '//localhost:8001/user/' + service.user.username + '/favorite/beer',
             data: {
                 'name': beer.name,
                 'id': beer.id
             }
         }).success(function (results) {
+            service.refreshUser();
             return results;
         }).error(function (error) {
             console.log('ERROR: userSvc: addFavorite', error);
@@ -96,28 +94,30 @@ function userSrc ($http) {
         });
     };
 
-    service.unFavorite = function (user, beer) {
+    service.unFavorite = function (beer) {
         return $http({
             method: 'DELETE',
-            url: '//localhost:8001/user/' + user + '/favorite/beer/' + beer.id,
-        }).success(function () {
-            return {status: 'success'};
+            url: '//localhost:8001/user/' + service.user.username + '/favorite/beer/' + beer.id,
+        }).success(function (results) {
+            service.refreshUser();
+            return results;
         }).error(function (error) {
             console.log('ERROR: userSvc: unFavorite', error);
             return false;
         });
     };
 
-    service.addRating = function (user, beer, rating) {
+    service.addRating = function (beer, rating) {
         return $http({
             method: 'POST',
-            url: '//localhost:8001/user/' + user + '/rating/beer',
+            url: '//localhost:8001/user/' + service.user.username + '/rating/beer',
             data: {
                 'name': beer.name,
                 'id': beer.id,
                 'rating': rating
             }
         }).success(function (results) {
+            service.refreshUser();
             return results;
         }).error(function (error) {
             console.log('ERROR: userSvc: addRating', error);
@@ -125,14 +125,30 @@ function userSrc ($http) {
         });
     };
 
-    service.unRate = function (user, beer) {
+    service.unRate = function (beer) {
         return $http({
             method: 'DELETE',
-            url: '//localhost:8001/user/' + user + '/rating/beer/' + beer.id
+            url: '//localhost:8001/user/' + service.user.username + '/rating/beer/' + beer.id
         }).success(function (results) {
+            service.refreshUser();
             return results;
         }).error(function (error) {
             console.log('ERROR: userSvc: unRate', error);
+        });
+    };
+
+    service.refreshUser = function(username) {
+        var userVar = username ? username : service.user.username;
+        return $http({
+            method: 'GET',
+            url: '//localhost:8001/user/' + userVar
+        }).success(function (results) {
+            service.user = results
+            console.log('SERVICE: userSrc: refreshUser: ', service.user);
+            return results;
+        }).error(function (error) {
+            console.log('ERROR: userSvc: refreshUser: ', error);
+            return error;
         });
     };
 

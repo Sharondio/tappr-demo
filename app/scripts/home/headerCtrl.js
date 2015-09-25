@@ -1,14 +1,25 @@
 angular.module('tappr.home')
     .controller('HeaderCtrl', HeaderCtrl);
 
-HeaderCtrl.$inject = ['$location', '$rootScope', '$cookieStore', '$route'];
+HeaderCtrl.$inject = ['$location', '$cookieStore', '$route', 'userSrc'];
 
-function HeaderCtrl ($location, $rootScope, $cookieStore, $route) {
+function HeaderCtrl ($location, $cookieStore, $route, userSrc) {
     var vm = this;
 
+    console.log('Cookie: ', $cookieStore.get('login'), userSrc);
+
     if ($cookieStore.get('login')) {
-        vm.user = $cookieStore.get('login');
-        $rootScope.user = $cookieStore.get('login');
+        console.log('Have a cookie...loggging in!');
+        userSrc.login($cookieStore.get('login'))
+            .then(
+            function () {
+                vm.user = userSrc.user;
+                console.log('Logged in!');
+            },
+            function (error) {
+                console.log('login error: ', error);
+            }
+        );
     }
 
     vm.isActive = function (view) {
@@ -23,9 +34,7 @@ function HeaderCtrl ($location, $rootScope, $cookieStore, $route) {
 
     vm.logout = function () {
         console.log('LOGOUT');
-        $cookieStore.remove('login');
-        vm.user = {};
-        $rootScope.user = {};
+        userSrc.logout();
         $route.reload();
     };
 
