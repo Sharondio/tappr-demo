@@ -10,11 +10,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="fav in user.favorites">
-                <td ng-click="goto(fav)">{{fav.name}}</td>
-                <td class="date" ng-click="goto(fav)">{{fav.added | date:'medium':'en_US'}}</td>
+            <tr ng-repeat="fav in profile.user.favorites">
+                <td ng-click="profile.goto(fav)">{{fav.name}}</td>
+                <td class="date" ng-click="profile.goto(fav)">{{fav.added | date:'medium':'en_US'}}</td>
                 <td>
-                    <button type="button" class="btn btn-default btn-sm" ng-click="unFavorite(fav, $index)">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="profile.unFavorite(fav, $index)">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                 </td>

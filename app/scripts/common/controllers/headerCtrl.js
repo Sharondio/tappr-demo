@@ -1,33 +1,41 @@
-angular.module('tappr.common')
-    .controller('HeaderCtrl', ['$scope', '$state', '$timeout', '$rootScope', '$cookieStore', 'messageSrc',
+angular.module('tappr.home')
+    .controller('HeaderCtrl', HeaderCtrl);
 
-        function ($scope, $state, $timeout, $rootScope, $cookieStore, messageSrc) {
-            console.log('initing HeaderCtrl');
+HeaderCtrl.$inject = ['$state', '$cookieStore', 'userSrc'];
 
-            if ($cookieStore.get('login')) {
-                $scope.user = $cookieStore.get('login');
-                $rootScope.user = $cookieStore.get('login');
+function HeaderCtrl ($state, $cookieStore, userSrc) {
+    var vm = this;
+
+    console.log('Cookie: ', $cookieStore.get('login'), userSrc);
+
+    if ($cookieStore.get('login')) {
+        console.log('Have a cookie...loggging in!');
+        userSrc.login($cookieStore.get('login'))
+            .then(
+            function () {
+                vm.user = userSrc.user;
+                console.log('Logged in!');
+            },
+            function (error) {
+                console.log('login error: ', error);
             }
+        );
+    }
 
-            $scope.isActive = function (view) {
-                return (view === $state.current.url);
-            };
+    vm.isActive = function (view) {
+        return (view === $state.current.url);
+    };
 
-            $scope.search = function () {
-                console.log('SEARCHING');
-                $state.go('root.beers.search', {query: $scope.query});
-                // Have to delay sending the query because the other controller has to be loaded.
-                $timeout(function () {
-                    messageSrc.broadcast($scope.query);
-                }, 50);
-            };
+    vm.search = function () {
+        console.log('SEARCHING');
+        $state.go('root.beers.search', {query: vm.query});
+    };
 
-            $scope.logout = function () {
-                $cookieStore.remove('login');
-                $scope.user = {};
-                $rootScope.user = {};
-                $state.go('root.home');
-            };
+    vm.logout = function () {
+        console.log('LOGOUT');
+        userSrc.logout();
+        $state.go('root.home');
+        $state.reload();
+    };
 
-        }
-    ]);
+}

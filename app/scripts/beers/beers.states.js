@@ -11,7 +11,11 @@ angular.module('tappr')
 
                 views: {
                     '@': {templateUrl: 'scripts/common/layouts/default.html'},
-                    'header@root.beers': {templateUrl: 'scripts/common/partials/header.html', controller: 'HeaderCtrl'}
+                    'header@root.beers': {
+                        templateUrl: 'scripts/common/partials/header.html',
+                        controller: 'HeaderCtrl',
+                        controllerAs: 'header'
+                    }
                 }
             })
 
@@ -19,7 +23,11 @@ angular.module('tappr')
                 url: '/beers',
                 secure: true,
                 views: {
-                    'content@root.beers': {templateUrl: 'scripts/beers/views/beer-search.html', controller: 'BeerSearchCtrl'}
+                    'content@root.beers': {
+                        templateUrl: 'scripts/beers/views/beer-search.html',
+                        controller: 'BeerSearchCtrl',
+                        controllerAs: 'search'
+                    }
                 }
             })
 
@@ -27,7 +35,11 @@ angular.module('tappr')
                 url: '/beers/detail/{id}',
                 secure: true,
                 views: {
-                    'content@root.beers': {templateUrl: 'scripts/beers/views/beer-detail.html', controller: 'BeerDetailCtrl'}
+                    'content@root.beers': {
+                        templateUrl: 'scripts/beers/views/beer-detail.html',
+                        controller: 'BeerDetailCtrl',
+                        controllerAs: 'detail'
+                    }
                 }
             })
 

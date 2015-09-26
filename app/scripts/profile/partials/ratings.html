@@ -12,13 +12,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="rating in user.ratings">
-                <td ng-click="goto(rating)">{{rating.name}}</td>
-                <td class="rating" ng-click="goto(rating)">{{rating.rating}}</td>
-                <td class="date" ng-click="goto(rating)">{{rating.updated | date:'medium':'en_US'}}</td>
-                <td class="date" ng-click="goto(rating)">{{rating.added | date:'medium':'en_US'}}</td>
+            <tr ng-repeat="rating in profile.user.ratings">
+                <td ng-click="profile.goto(rating)">{{rating.name}}</td>
+                <td class="rating" ng-click="profile.goto(rating)">{{rating.rating}}</td>
+                <td class="date" ng-click="profile.goto(rating)">{{rating.updated | date:'medium':'en_US'}}</td>
+                <td class="date" ng-click="profile.goto(rating)">{{rating.added | date:'medium':'en_US'}}</td>
                 <td>
-                    <button type="button" class="btn btn-default btn-sm" ng-click="unRate(rating, $index)">
+                    <button type="button" class="btn btn-default btn-sm" ng-click="profile.unRate(rating, $index)">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                 </td>

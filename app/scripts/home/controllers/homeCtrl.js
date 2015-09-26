@@ -1,61 +1,36 @@
-angular.module('tappr.home', [])
+angular.module('tappr.home')
+    .controller('HomeCtrl', HomeCtrl);
 
-    .controller('HomeCtrl', ['$scope', '$cookieStore', '$rootScope', 'userSrc',
-        function($scope, $cookieStore, $rootScope, userSrc) {
+HomeCtrl.$inject = ['$cookieStore', 'userSrc'];
 
-            function init () {
-                console.log('INIT');
-                $scope.messages = [];
-                $scope.user = {};
-                $scope.messages.push('HomeCtrl is initted');
+function HomeCtrl ($cookieStore, userSrc) {
 
-                if ($cookieStore.get('login')) {
-                    $scope.user = $cookieStore.get('login');
-                    $rootScope.user = $cookieStore.get('login');
-                    console.log('already logged in!', $cookieStore.get('login'), $scope.user);
-                }
-            }
-            init ();
+    var vm = this;
+    vm.user = userSrc.user;
 
-            $scope.login = function() {
-
-                userSrc.login($scope.username)
-                    .then(
+    vm.login = function() {
+        console.log('Logging in: ', vm.username);
+        userSrc.login(vm.username)
+            .then(
+            function(result) {
+                vm.user = userSrc.user;
+                console.log('homeCtrl: login: ', userSrc.user, vm.user);
+            },
+            function(error) {
+                if (error.status === 404) {
+                    console.log('User not found: creating...');
+                    userSrc.create(vm.username)
+                        .then(
                         function(result) {
-                            console.log(result);
-                            $scope.user = result.data;
-                            $cookieStore.put('login', result.data);
-                            console.log('homeCtrl: login: ', result.data);
+                            vm.user = userSrc.user;
+                            console.log('User created!', userSrc.user, vm.user);
                         },
                         function(error) {
-
-                            if (error.status === 404) {
-                                console.log('User not found: creating...');
-
-                                userSrc.create($scope.username)
-                                    .then(
-                                        function(result) {
-                                            console.log('User created!');
-
-                                            userSrc.login($scope.username)
-                                                .then(
-                                                    function(result) {
-                                                        $scope.user = result.data;
-                                                        $cookieStore.put('login', result.data);
-
-                                                        console.log('homeCtrl: login: ', result.data);
-                                                    },
-                                                    function(error) {
-                                                        console.log('OOPS!', error);
-                                                    }
-                                                );
-                                        },
-                                        function(error) {
-                                            console.log('I tried my best, just can\'t get this person logged in.', error);
-                                        }
-                                    );
-                            }
+                            console.log('I tried my best, just can\'t get this person logged in.', error);
                         }
                     );
-            };
-        }]);
+                }
+            }
+        );
+    };
+}

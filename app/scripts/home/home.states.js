@@ -9,7 +9,11 @@ angular.module('tappr')
                 url: '/',
                 secure: false,
                 views: {
-                    'content@root': { templateUrl: 'scripts/home/views/home.html', controller: 'HomeCtrl'}
+                    'content@root': {
+                        templateUrl: 'scripts/home/views/home.html',
+                        controller: 'HomeCtrl',
+                        controllerAs: 'home'
+                    }
                 }
             })
 
