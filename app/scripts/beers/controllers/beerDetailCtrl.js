@@ -1,9 +1,9 @@
 angular.module('tappr.beers')
     .controller('BeerDetailCtrl', BeerDetailCtrl);
 
-BeerDetailCtrl.$inject = ['$stateParams','userSrc', 'beerSrc'];
+BeerDetailCtrl.$inject = ['$state', '$stateParams','userSrc', 'beerSrc'];
 
-function BeerDetailCtrl ($stateParams, userSrc, beerSrc) {
+function BeerDetailCtrl ($state, $stateParams, userSrc, beerSrc) {
 
     var vm = this;
 
@@ -19,7 +19,7 @@ function BeerDetailCtrl ($stateParams, userSrc, beerSrc) {
         } else {
             $state.go('root.beers.search');
         }
-    };
+    }
 
     init();
 
