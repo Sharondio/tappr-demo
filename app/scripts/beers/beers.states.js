@@ -8,7 +8,6 @@ angular.module('tappr')
             .state('root.beers', {
                 url: '',
                 abstract: true,
-
                 views: {
                     '@': {templateUrl: 'scripts/common/layouts/default.html'},
                     'header@root.beers': {
@@ -38,10 +37,8 @@ angular.module('tappr')
                     'content@root.beers': {
                         templateUrl: 'scripts/beers/views/beer-detail.html',
                         controller: 'BeerDetailCtrl',
-                        controllerAs: 'detail'
                     }
                 }
-            })
-
+            });
 
     });

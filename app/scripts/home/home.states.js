@@ -15,7 +15,6 @@ angular.module('tappr')
                         controllerAs: 'home'
                     }
                 }
-            })
-
-
+            });
     });
+ 

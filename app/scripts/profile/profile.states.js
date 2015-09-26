@@ -6,20 +6,6 @@ angular.module('tappr')
         $stateProvider
 
             .state('root.profile', {
-                url: '',
-                abstract: true,
-
-                views: {
-                    '@': {templateUrl: 'scripts/common/layouts/default.html'},
-                    'header@root.profile': {
-                        templateUrl: 'scripts/common/partials/header.html',
-                        controller: 'HeaderCtrl',
-                        controllerAs: 'header'
-                    }
-                }
-            })
-
-            .state('root.profile.view', {
                 url: '/profile',
                 secure: true,
                 views: {

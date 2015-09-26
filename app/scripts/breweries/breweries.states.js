@@ -6,19 +6,15 @@ angular.module('tappr')
         $stateProvider
 
             .state('root.breweries', {
-                url: '',
-                abstract: true,
-
+                url: '/breweries',
+                secure: true,
                 views: {
-                    '@': {templateUrl: 'app/modules/shared/layouts/layout-main.html'},
-                    'header@root': {
-                        templateUrl: 'app/modules/shared/partials/header.html',
-                        controller: 'HeaderCtrl',
-                        controllerAs: 'breweries'
+                    'content@root.beers': {
+                        templateUrl: 'scripts/beers/views/beer-search.html',
+                        controller: 'BeerSearchCtrl',
+                        controllerAs: 'search'
                     }
-
                 }
             })
-
 
     });
