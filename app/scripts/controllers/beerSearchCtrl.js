@@ -1,7 +1,6 @@
 angular.module('tappr.beersearch', [])
 
-.controller('BeerSearchCtrl', ['$scope', '$rootScope', '$routeParams', '$http', '$location',
-        function($scope, $rootScope, $routeParams, $http, $location) {
+.controller('BeerSearchCtrl', function($scope, $rootScope, $routeParams, $http, $location) {
     $scope.messages = [];
 
     function init () {
@@ -73,4 +72,4 @@ angular.module('tappr.beersearch', [])
     $scope.catFilter = function(beer) {
         return $scope.filterItems[beer.category];
     };
-}]);
+});

@@ -1,7 +1,6 @@
 angular.module('tappr.home', [])
 
-.controller('HomeCtrl', ['$scope', '$http', '$cookieStore', '$rootScope',
-        function($scope, $http, $cookieStore, $rootScope) {
+.controller('HomeCtrl', function($scope, $http, $cookieStore, $rootScope) {
 
         var baseUrl = '//localhost:8001/user',
             queryUrl;
@@ -72,4 +71,4 @@ angular.module('tappr.home', [])
                 });
         });
 
-}]);
+});

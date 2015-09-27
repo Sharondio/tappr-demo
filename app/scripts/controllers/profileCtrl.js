@@ -1,6 +1,6 @@
 angular.module('tappr.profile', [])
 
-.controller('ProfileCtrl', ['$rootScope', '$scope', '$http', '$location', function($rootScope, $scope, $http, $location) {
+.controller('ProfileCtrl', function($rootScope, $scope, $http, $location) {
 
     function init () {
         console.log('INIT');
@@ -60,4 +60,4 @@ angular.module('tappr.profile', [])
         $location.url('/beers/' + beer.id);
     };
 
-}]);
+});

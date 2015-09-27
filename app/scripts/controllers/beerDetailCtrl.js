@@ -1,7 +1,5 @@
 angular.module('tappr.beerdetail', [])
-
-.controller('BeerDetailCtrl', ['$scope', '$rootScope', '$routeParams', '$location', '$http',
-        function($scope, $rootScope, $routeParams, $location, $http) {
+    .controller('BeerDetailCtrl', function($scope, $rootScope, $routeParams, $location, $http) {
     $scope.messages = [];
     $scope.user = $rootScope.user;
 
@@ -131,4 +129,4 @@ angular.module('tappr.beerdetail', [])
         }
     });
 
-}]);
+});

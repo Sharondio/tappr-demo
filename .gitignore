@@ -1,9 +1,10 @@
 logs/*
 !.gitkeep
 node_modules/
-bower_components/
+app/bower_components/
 tmp
 .DS_Store
 .idea
 all.js
 bower.js
+app/styles/css
